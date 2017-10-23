@@ -29,3 +29,7 @@ string symtab::get_value(string sym) {
 void symtab::delete_symbol(string sym, int val) {
 
 }
+
+int symtab::get_table_size(string) {
+
+}
