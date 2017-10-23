@@ -43,3 +43,15 @@ void symtab::print() {
     for(auto m_iter = m.begin(); m_iter != m.end(); ++m_iter)
         std::cout << m_iter->first << " " << m_iter->second << '\n';
 }
+
+//Converts from a string to an integer value
+int symtab::string_to_int(string str) {
+    istringstream inpstr(str);
+    int h;
+    inpstrstr >> h;
+    return h;
+}
+
+string symtab::to_upper_string(string) {
+
+}

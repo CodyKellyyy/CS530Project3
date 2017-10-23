@@ -39,10 +39,10 @@ private:
     map<string, int> >::iterator m_iter;
 
     string to_upper_string(string);
-    string hex_to_dec(string);
-    string dec_to_hex(string);
+    int hex_to_int(string);
+    int string_to_int(string);
+    string int_to_hex(string);
     string int_to_string(string);
-    string string_to_int(string);
 
     //print table
     void print();
