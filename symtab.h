@@ -45,6 +45,11 @@ private:
     map<string, int> > m;
     map<string, int> >::iterator m_iter;
 
+    string to_upper_string(string);
+    string hex_to_dec(string);
+    string dec_to_hex(string);
+    string int_to_string(string);
+    string string_to_int(string);
 
 };
 
