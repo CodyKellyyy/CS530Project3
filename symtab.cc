@@ -15,11 +15,16 @@ symtab::symtab(){
 }
 
 void symtab::add_symbol(string sym, int val) {
-
+    if(!find_symbol(sym))
+        m.insert(sym, val);
+    else
+        throw symtab_exception("Symbol has already been defined.");
 }
 
-bool symtab::check_symbol(string sym) {
-
+bool symtab::find_symbol(string sym) {
+    if(m.find(sym) == m.end())
+        return false;
+    return true;
 }
 
 string symtab::get_value(string sym) {
@@ -27,9 +32,14 @@ string symtab::get_value(string sym) {
 }
 
 void symtab::delete_symbol(string sym, int val) {
+    if(find_symbol(sym))
+        m.erase(sym);
+    else
+        throw symtab_exception("Symbol does not exist.");
 
 }
 
-int symtab::get_table_size(string) {
-
+void symtab::print() {
+    for(auto m_iter = m.begin(); m_iter != m.end(); ++m_iter)
+        std::cout << m_iter->first << " " << m_iter->second << '\n';
 }
