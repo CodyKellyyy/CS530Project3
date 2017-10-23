@@ -2,11 +2,11 @@
  * Thomas Valenta
  * 10/22/17
  * CS530 Riggins, Fall 2017
- * Program3
+ * Program 3
 */
 
 #ifndef SYMTAB_EXCEPTION_H
-#define SYMTAB_ERROR_EXCEPTION_H
+#define SYMTAB_EXCEPTION_H
 
 #include <string>
 
