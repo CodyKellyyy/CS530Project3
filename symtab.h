@@ -7,11 +7,9 @@
 
 #ifndef SYMTAB_H
 #define SYMTAB_H
-
 #include <iostream>
 #include <map>
 #include <string>
-
 #include "symtab_exception.h"
 
 using namespace std;
@@ -27,7 +25,7 @@ public:
     void add_symbol(string sym, int val);
 
     //check if symbol is in table
-    bool check_symbol(string sym);
+    bool find_symbol(string sym);
 
     //get and return value associated with symbol
     string get_value(string sym);
@@ -35,14 +33,10 @@ public:
     //delete symbol/value pair
     void delete_symbol(string sym, int val);
 
-
-    
-
-
 private:
 
-    map<string, int> > s;
-    map<string, int> >::iterator s_iter;
+    map<string, int> > m;
+    map<string, int> >::iterator m_iter;
 
     string to_upper_string(string);
     string hex_to_dec(string);
