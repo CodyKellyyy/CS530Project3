@@ -27,9 +27,22 @@ public:
 
 
 private:
+
+    // All values to be put into list file
     int lineNumber;
+    string address;
+    string label;
+    string opcode;
+    string operand;
 
     ofstream myfile;
+
+    // Writes the Line number, address, label, opcode, and operand to the listing file
     void write_to_file(string fileName);
+    // Adds the symbols in the code to symtab
+    void add_to_symtab(string address, string label, string opcode);
+
 
 };
+
+#endif

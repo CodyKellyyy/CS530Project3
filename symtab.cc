@@ -48,7 +48,7 @@ void symtab::print() {
 int symtab::string_to_int(string str) {
     istringstream inpstr(str);
     int h;
-    inpstrstr >> h;
+    inpstr >> h;
     return h;
 }
 

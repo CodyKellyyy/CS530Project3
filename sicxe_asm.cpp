@@ -23,11 +23,16 @@ void sicxe_asm::write_to_file(string fileName) {
         myfile << secondLine[i] << "\t";
     }
     myfile << endl;
+
+}
+
+void sicxe_asm::add_to_symtab(string address, string label, string operand) {
+    symtab symbol;
+    symbol.add_symbol(string(label),int(0));
+
 }
 
 int main(int argc, char *argv[]){
     string fileName = argv[1];
-
-    sicxe_asm::write_to_file(fileName);
 
 }
