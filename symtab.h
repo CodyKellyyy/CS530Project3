@@ -35,15 +35,14 @@ public:
     //delete symbol/value pair
     void delete_symbol(string sym, int val);
 
-    //print table
-    void print();
+
     
 
 
 private:
 
-    map<string, int> > m;
-    map<string, int> >::iterator m_iter;
+    map<string, int> > s;
+    map<string, int> >::iterator s_iter;
 
     string to_upper_string(string);
     string hex_to_dec(string);
@@ -51,6 +50,8 @@ private:
     string int_to_string(string);
     string string_to_int(string);
 
+    //print table
+    void print();
 };
 
 #endif
