@@ -4,9 +4,10 @@
  * CS530 Riggins, Fall 2017
  * Program 3
 */
-
 #include <cstdlib>
 #include <sstream>
+#include <algorithm>
+#include <iomainip>
 #include "symtab.h"
 #include "symtab_exception.h"
 
@@ -51,7 +52,22 @@ int symtab::string_to_int(string str) {
     inpstr >> h;
     return h;
 }
+//Converts string to uppercase
+string symtab::to_upper_string(str) {
+    transform(str.begin(), str.end(), str.begin(),::toupper);
+    return string;
+}
+//Converts integers to hex values
+string symtab::int_to_hex(int dec, int width ) {
+    stringstream stream;
+    stream << setfill('0') << setw(width) << hex << dec;
+    return to_uppercase(stream.str());  //Returns uppercase hex letters
 
-string symtab::to_upper_string(string) {
 
+}
+
+int symtab:: hex_to_int(string str){
+    int v;
+    sscanf(c_str(), "%x", &v);
+    return v;
 }
