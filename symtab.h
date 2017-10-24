@@ -35,8 +35,8 @@ public:
 
 private:
 
-    map<string, int> m;
-    map<string, int>::iterator m_iter;
+    map<string, int>> m;
+    map<string, int>>::iterator m_iter;
 
     string to_upper_string(string);
     int hex_to_int(string);

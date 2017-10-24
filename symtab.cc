@@ -65,9 +65,15 @@ string symtab::int_to_hex(int dec, int width ) {
 
 
 }
-
+//Converts hexadecimal values to decimal values
 int symtab:: hex_to_int(string str){
     int v;
     sscanf(c_str(), "%x", &v);
     return v;
+}
+//Converts integer to string
+string symtab:: int_to_string(string num){
+    ostringstream ss;
+    ss << num;
+    return ss.str();
 }
