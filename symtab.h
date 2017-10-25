@@ -35,17 +35,6 @@ public:
 
 private:
 
-    map<string, string>> m;
-    map<string, string>>::iterator m_iter;
-
-    string to_upper_string(string);
-    int hex_to_int(string);
-    int string_to_int(string);
-    string int_to_hex(string);
-    string int_to_string(string);
-
-    //print table
-    void print();
 };
 
 #endif
