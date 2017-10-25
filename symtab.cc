@@ -15,7 +15,7 @@ symtab::symtab(){
 
 }
 
-void symtab::add_symbol(string sym, int val) {
+void symtab::add_symbol(string sym, string val) {
     if(!find_symbol(sym))
         m.insert(sym, val);
     else
@@ -34,7 +34,7 @@ string symtab::get_value(string sym) {
 
 }
 
-void symtab::delete_symbol(string sym, int val) {
+void symtab::delete_symbol(string sym, string val) {
     if(find_symbol(sym))
         m.erase(sym);
     else

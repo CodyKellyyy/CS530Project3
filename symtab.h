@@ -22,7 +22,7 @@ public:
     symtab();
 
     //add symbol/value pair to table
-    void add_symbol(string sym, int val);
+    void add_symbol(string sym, string val);
 
     //check if symbol is in table
     bool find_symbol(string sym);
@@ -31,12 +31,12 @@ public:
     string get_value(string sym);
 
     //delete symbol/value pair
-    void delete_symbol(string sym, int val);
+    void delete_symbol(string sym, string val);
 
 private:
 
-    map<string, int>> m;
-    map<string, int>>::iterator m_iter;
+    map<string, string>> m;
+    map<string, string>>::iterator m_iter;
 
     string to_upper_string(string);
     int hex_to_int(string);
