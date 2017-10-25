@@ -31,7 +31,7 @@ bool symtab::find_symbol(string sym) {
 string symtab::get_value(string sym) {
     if(!find_symbol(sym))
         throw symtab_exception("Value does not exist.");
-    
+
 }
 
 void symtab::delete_symbol(string sym, int val) {
