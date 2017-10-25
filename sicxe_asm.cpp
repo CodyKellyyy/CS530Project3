@@ -44,6 +44,8 @@ int main(int argc, char *argv[]){
 
     symtab1.print_map();
 
+    cout << symtab1.get_value("MCFLURRY") << endl;
+    cout << symtab1.get_value("MCFaLURRY") << endl;
 
 
 }

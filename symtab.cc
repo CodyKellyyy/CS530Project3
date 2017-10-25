@@ -6,7 +6,7 @@
 */
 #include <iostream>
 #include <map>
-#include <string>
+#include <cstdlib>
 #include "file_parser.h"
 #include "symtab_exception.h"
 #include "symtab.h"
@@ -18,11 +18,17 @@ void symtab::add_symbol(string key, int val) {
 }
 
 bool symtab::symbol_exists(string key) {
-    if (m.find(key) == m.end()) {
-        return false;
-    } else {
-        return true;
+    try {
+        if (m.find(key) == m.end()) {
+            throw symtab_exception("Symbol " + key + " was not found in Symbols table.");
+        } else {
+            return true;
+        }
+    } catch (symtab_exception& e) {
+        cerr << e.getMessage() << endl;
+        exit(EXIT_FAILURE);
     }
+
 }
 
 int symtab::get_value(string key) {
