@@ -10,6 +10,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include "file_parser.h"
 #include "symtab_exception.h"
 
 using namespace std;
@@ -22,18 +23,23 @@ public:
     symtab();
 
     //add symbol/value pair to table
-    void add_symbol(string sym, string val);
+    void add_symbol(string,string);
 
     //check if symbol is in table
-    bool find_symbol(string sym);
+    bool symbol_exists(string);
 
     //get and return value associated with symbol
-    string get_value(string sym);
+    int get_value(string);
 
     //delete symbol/value pair
-    void delete_symbol(string sym, string val);
+    void delete_symbol(string);
 
 private:
+    map<string,int> m;
+    map<string,int>::iterator m_iter;
+
+
+
 
 };
 
