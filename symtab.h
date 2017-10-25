@@ -8,7 +8,6 @@
 #ifndef SYMTAB_H
 #define SYMTAB_H
 #include <iostream>
-#include <map>
 #include <string>
 #include "file_parser.h"
 #include "symtab_exception.h"
@@ -23,10 +22,7 @@ public:
     symtab();
 
     //add symbol/value pair to table
-    void add_symbol(string,string);
-
-    //check if symbol is in table
-    bool symbol_exists(string);
+    void add_symbol(string,int);
 
     //get and return value associated with symbol
     int get_value(string);
@@ -34,12 +30,15 @@ public:
     //delete symbol/value pair
     void delete_symbol(string);
 
+    //Print map (FOR DEBUG PURPOSES ONLY)
+    void print_map();
+
 private:
     map<string,int> m;
     map<string,int>::iterator m_iter;
 
-
-
+    //check if symbol is in table
+    bool symbol_exists(string);
 
 };
 

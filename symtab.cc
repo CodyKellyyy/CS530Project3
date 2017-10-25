@@ -13,8 +13,8 @@
 
 symtab::symtab(){}
 
-void symtab::add_symbol(string key, string val) {
-    m.insert(key,val);
+void symtab::add_symbol(string key, int val) {
+    m.insert(make_pair(key,val));
 }
 
 bool symtab::symbol_exists(string key) {
@@ -27,10 +27,17 @@ bool symtab::symbol_exists(string key) {
 
 int symtab::get_value(string key) {
     if (symbol_exists(key)) {
-        return m[key];
+        return m.find(key)->second;
     }
 }
 
 void symtab::delete_symbol(string key) {
+    if (symbol_exists(key)) {
+        m.erase(key);
+    }
+}
 
+void symtab::print_map() {
+    for (m_iter = m.begin(); m_iter != m.end(); m_iter++)
+        cout << "Symbol: " << m_iter->first << "\tAddress: " << m_iter->second << endl;
 }
