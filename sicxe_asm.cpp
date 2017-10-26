@@ -6,6 +6,12 @@
 */
 
 #include "sicxe_asm.h"
+#include "file_parser.h
+#include "file_parse_exception.h"
+#include "opcodetab.h"
+#include "opcode_error_exception.h"
+#include "symtab.h"
+#include "symtab_exception.h"
 
 int main(int argc, char *argv[]){
     //    if(argc != 2) {
@@ -41,6 +47,7 @@ sicxe_asm::sicxe_asm() {}
 void sicxe_asm::parse_rows(file_parser parser) {
     //This outer loop goes through each row in the file parser
     line_number = 0;
+    line = nextline;
     while (to_upper_string(parser.get_token(line_number, OPCODE)) != "START" && line_number < parser.size()) {
         string temp_label = parser.get_token(line_number, LABEL);
         string temp_opcode = parser.get_token(line_number, OPCODE);
@@ -56,8 +63,18 @@ void sicxe_asm::parse_rows(file_parser parser) {
         program_name = parser.get_token(line_number, LABEL);
         LOC_CTR = format_address(parser.get_token(line_number, OPERANDS));
     }
-
     //TODO: Code the pseudocode that Sam sent in the e-mail. Start here.
+    while (to_upper_string(temp_opcode) != "END"){
+        LOC_CTR = format_address(parser.get.token(line_number, OPCODE));
+            if(to_upper_string(temp_opcode) = assembler_directives[8]){
+                if(temp_opcode == "EQU"){
+                    if(temp_label == "")
+                        throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
+                }
+
+            }
+    }
+
 }
 
 int sicxe_asm::format_address(string str_addr) {
