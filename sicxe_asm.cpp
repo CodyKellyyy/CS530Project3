@@ -13,16 +13,22 @@ int main(int argc, char *argv[]){
 //             "to process at the command line." << endl;
 //        exit(1);
 //    }
-    string filename = "/Users/edwin.coronado/CLionProjects/SIC-XE_Tokenizer/source4.txt";
+    string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
     try {
         file_parser parser(filename); //Initialize file_parser object
         symtab symbtab; //Initialize Symbol Table object
 
         parser.read_file(); //Read the file (tokenize it)
 
-        sicxe_asm::parse_rows(parser);
-
-
+        try {
+            sicxe_asm assembler;
+            assembler.parse_rows(parser);
+            assembler.symtab.add_symbol("EDWIN", 24);
+            assembler.symtab.print_map();
+        } catch (symtab_exception& e) {
+            cerr << e.getMessage() << endl;
+            exit(EXIT_FAILURE);
+        }
     }
     catch(file_parse_exception excpt) {
         cerr << "**Sorry, error: " << excpt.getMessage() << endl;
@@ -33,13 +39,25 @@ int main(int argc, char *argv[]){
 sicxe_asm::sicxe_asm() {}
 
 void sicxe_asm::parse_rows(file_parser parser) {
-
     //This outer loop goes through each row in the file parser
-    for (int i = 0; i < parser.size(); i++) {
-        if (parser.get_token(i, OPCODE) != "END") {
-            //LOCCTR = format_address(parser.get_token(i,OPERANDS));
-        }
+    line_number = 0;
+    while (to_upper_string(parser.get_token(line_number, OPCODE)) != "START" && line_number < parser.size()) {
+        string temp_label = parser.get_token(line_number, LABEL);
+        string temp_opcode = parser.get_token(line_number, OPCODE);
+        string temp_operands = parser.get_token(line_number, OPERANDS);
+
+        if (temp_label != "" || temp_opcode != "" || temp_operands != "")
+            throw symtab_exception("Invalid syntax before 'START' opcode on line " + line_number);
+        line_number++;
     }
+    if (line_number == parser.size()) {
+        throw symtab_exception("'START' directive not found");
+    } else {
+        program_name = parser.get_token(line_number, LABEL);
+        LOC_CTR = format_address(parser.get_token(line_number, OPERANDS));
+    }
+
+    //TODO: Code the pseudocode that Sam sent in the e-mail. Start here.
 }
 
 int sicxe_asm::format_address(string str_addr) {
@@ -95,20 +113,12 @@ void sicxe_asm::write_to_file(string fileName) {
 }
 
 bool sicxe_asm::is_assm_dir(string code) {
-    vector<string> assembler_directives;
-    assembler_directives.push_back("START");
-    assembler_directives.push_back("END");
-    assembler_directives.push_back("BYTE");
-    assembler_directives.push_back("WORD");
-    assembler_directives.push_back("RESB");
-    assembler_directives.push_back("RESW");
-    assembler_directives.push_back("BASE");
-    assembler_directives.push_back("NOBASE");
-
-    if (find(assembler_directives.begin(), assembler_directives.end(), code) != assembler_directives.end()) {
-        return true;
-    } else {
-        return false;
+    bool found = false;
+    for (int i = 0; i < assembler_directives->length(); i++) {
+        if (to_upper_string(code) == assembler_directives[i]) {
+            found = true;
+            return found;
+        }
     }
 }
 
@@ -118,3 +128,10 @@ bool sicxe_asm::is_assm_dir(string code) {
 //
 //}
 
+string sicxe_asm::to_upper_string(string s) {
+    string temp = "";
+    for (int i=0; i<s.length(); i++) {
+        temp += toupper(s[i]);
+    }
+    return temp;
+}

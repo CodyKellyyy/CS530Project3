@@ -25,10 +25,11 @@ class sicxe_asm {
 
 public:
     sicxe_asm();
-    ~sicxe_asm();
-    static void parse_rows(file_parser);
-    static int format_address(string);
-    static bool is_assm_dir(string);
+    string to_upper_string(string);
+    void parse_rows(file_parser);
+    int format_address(string);
+    bool is_assm_dir(string);
+    symtab symtab;
 
 
 
@@ -36,10 +37,13 @@ private:
 
     /* ---- Members ---- */
     // All values to be put into list file
-    int lineNumber;
-    static int starting_address;
-    static int LOCCTR;
 
+
+    int line_number;
+    int starting_address;
+    int LOC_CTR;
+
+    string program_name;
     string address;
     string label;
     string opcode;
@@ -55,6 +59,15 @@ private:
     // Formats the address depending if it's hex or dec
 
 
+    /* Vector of Assembler Directives */
+    string assembler_directives[8] = {"START",
+                                      "END",
+                                      "BYTE",
+                                      "WORD",
+                                      "RESB",
+                                      "RESW",
+                                      "BASE",
+                                      "NOBASE"};
 
     /* ---- Enum for legibility purposes ---- */
     enum Token {
