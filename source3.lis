@@ -5,8 +5,8 @@ Line    Address Label   Opcode  Operand
 3       00000
 4       00000
 5       00000   prog    start   1000
-6       01000   bsrch   EQU     14
-7               OFFB    EQU     8
+6       00000   bsrch   EQU     14
+7       00000   OFFB    EQU     8
 8                       BASE    delta
 9                       LDB     #delta
 10                      lds     #3
