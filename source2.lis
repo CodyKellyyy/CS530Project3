@@ -1,0 +1,23 @@
+Line    Address Label   Opcode  Operand
+=====   ======= ======  ======  =======
+1       00000
+2       00000
+3       00000
+4       00000
+5       00000
+6       00000   prog    start   1000
+7       01000           lds     #3
+8                       ldt     #300
+9                       ldx     #0
+10              addlf   lda     alpha,x
+11                      add     beta,x
+12                      sta     gamma,x
+13                      addr    s,x
+14                      compr   x,t
+15                      jlt     addlf
+16
+17
+18              alpha   resw    100
+19              beta    resw    100
+20              gamma   resw    100
+21                      end     prog
