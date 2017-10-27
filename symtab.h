@@ -33,6 +33,9 @@ public:
     //Print map (FOR DEBUG PURPOSES ONLY)
     void print_map();
 
+    //Change value store at a symbol
+    void change_value(string,int);
+
 private:
     map<string,int> m;
     map<string,int>::iterator m_iter;

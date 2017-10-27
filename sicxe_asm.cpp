@@ -51,9 +51,9 @@ void sicxe_asm::parse_rows(file_parser parser) {
     while (to_upper_string(parser.get_token(line_number, OPCODE)) != "START" && line_number < parser.size()) {
         string temp_label = parser.get_token(line_number, LABEL);
         string temp_opcode = parser.get_token(line_number, OPCODE);
-        string temp_operands = parser.get_token(line_number, OPERANDS);
+        string temp_operand = parser.get_token(line_number, OPERANDS);
 
-        if (temp_label != "" || temp_opcode != "" || temp_operands != "")
+        if (temp_label != "" || temp_opcode != "" || temp_operand != "")
             throw symtab_exception("Invalid syntax before 'START' opcode on line " + line_number);
         line_number++;
     }
@@ -65,16 +65,61 @@ void sicxe_asm::parse_rows(file_parser parser) {
     }
     //TODO: Code the pseudocode that Sam sent in the e-mail. Start here.
     while (to_upper_string(temp_opcode) != "END"){
-        LOC_CTR = format_address(parser.get.token(line_number, OPCODE));
-            if(to_upper_string(temp_opcode) = assembler_directives[8]){
+        LOC_CTR = format_address(parser.get_token(line_number, OPCODE));
+            if(to_upper_string(temp_opcode) == assembler_directives[8]){
                 if(temp_opcode == "EQU"){
                     if(temp_label == "")
                         throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
+                    if(symtab.symbol_exists(temp_label) == true)
+                        throw symtab_exception("Label is already in use, reused on line " + line_number);
+                    symtab.add_symbol(temp_label, temp_operand);
                 }
 
-            }
-    }
+                else{
+                    if (temp_label != "") {
+                        if (symtab.symbol_exists == true)
+                            throw symtab_exception("Label is already in use, reused on line " + line_number);
+                        symtab.add_symbol(temp_label, LOC_CTR);
+                    }
+                }
 
+                if (temp_opcode == "BASE")
+                    base = temp_operand;
+                if (temp_opcode == "NOBASE")
+                    base = "";
+                if (temp_opcode == "WORD")
+                    LOC_CTR += 3;
+                if (temp_opcode == "BYTE") {
+                    token = substring_quotes(temp_operand);
+                    if (first_letter(temp_operand) == "C")
+                        LOC_CTR += token.length;
+                    else if (first_letter(temp_operand) == "X"){
+                        if((token.length & 1) == 1)
+                            throw symtab_exception("Cannot have hex value with odd number of digits on line" + line_number);
+                        LOC_CTR += (token.length >> 1)
+                    }
+                }
+                else if (temp_opcode == "RESW")
+                    LOC_CTR += (3 * (to_int(temp_operand)));
+                else if (temp_opcode == "RESB")
+                    LOC_CTR += to_int(operand);
+
+            }
+        else {
+                if (temp_label != "") {
+                    if (symtab.exists(temp_label))
+                        throw symtab_exception("Label is already in use, reused on line " + line_number);
+                    else symtab.add(temp_lable, LOC_CTR);
+                }
+                size = symtab.get_size;
+                if (!found)
+                    throw symtab_exception("Size of symtab not found");
+                LOC_CTR += size;
+
+            }
+        write opcode,operand to line;
+        line = nextline;
+    }
 }
 
 int sicxe_asm::format_address(string str_addr) {

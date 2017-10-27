@@ -47,3 +47,8 @@ void symtab::print_map() {
     for (m_iter = m.begin(); m_iter != m.end(); m_iter++)
         cout << "Symbol: " << m_iter->first << "\tAddress: " << m_iter->second << endl;
 }
+
+void symtab::change_value(string key, int value) {
+    symtab::delete_symbol(key);
+    symtab::add_symbol(key,value);
+}

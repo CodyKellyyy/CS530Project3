@@ -43,11 +43,14 @@ private:
     int starting_address;
     int LOC_CTR;
 
+
     string program_name;
     string address;
-    string label;
-    string opcode;
-    string operand;
+    string temp_label;
+    string temp_opcode;
+    string temp_operand;
+    string token;
+    string base;
 
     ofstream myfile;
 
@@ -57,7 +60,9 @@ private:
     // Adds the symbols in the code to symtab
     void add_to_symtab(string address, string label, string opcode);
     // Formats the address depending if it's hex or dec
-
+    // Changes string to int
+    int to_int(string operand);
+    string first_letter()
 
     /* Vector of Assembler Directives */
     string assembler_directives[8] = {"START",
