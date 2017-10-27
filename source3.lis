@@ -1,2 +1,55 @@
 Line    Address Label   Opcode  Operand
 =====   ======= ======  ======  =======
+1
+2
+3
+4
+5               prog    start   1000    .start of sample program
+6               bsrch   EQU     14
+7               OFFB    EQU     8
+8                       BASE    delta
+9                       LDB     #delta
+10                      lds     #3
+11                      +ldx     @foo
+12                      +lda     beta,x
+13                      add     gamma
+14                      ldx     @zeta
+15              first   NORM
+15                      SVC     13
+16                      HIO
+17                      ldt     #alpha
+18                      +ldt     #foo
+19                      lda     @alpha
+20                      lda     @foo
+21                      addr    S,T
+22                      shiftr  T,2
+23                      shiftl  S,1
+24                      tixr    T
+25                      j       first
+26                      +j      first
+27                      Clear   T
+28                      +ldt    #50000
+29                      ldx     #0
+30                      jsub    first
+31              addl    lda     alpha,x       
+32                      add     beta,x
+33                      sta     gamma,x
+34                      addr    s,t
+35                      compr   x,t
+36                      +jlt     addl
+37                      jlt     addl
+38                      rsub
+39
+40
+41              test    byte    C'12345'
+42              test2   byte    x'007b'
+43              alpha   resw    100
+44              beta    RESW    100
+45              gamma   resw    100
+46              delta   WORD    20
+47              zeta    BYTE    C'EOF'
+48              eta     byte    X'FFFFFE'
+49              theta	byte	c'eof'
+50              buffer  RESB    3000
+51              foo     word    1
+52                      end     prog
