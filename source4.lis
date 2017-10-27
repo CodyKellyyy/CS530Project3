@@ -1,2 +1,30 @@
 Line    Address Label   Opcode  Operand
 =====   ======= ======  ======  =======
+1       00000
+2       00000
+3       00000
+4       00000
+5       00000   prog    start   1000
+6       01000
+7       01000   ThisIsAV
+8
+9               lds     #3
+10              ldt     #300
+11              ldx     #0
+12              addlf   lda     alpha,x
+13                      add     beta,x
+14                      sta     gamma,x
+15                      addr    s,x
+16                      compr   x,t
+17                      jlt     addlf
+18                      +LDA    delta
+19                      LDB     @beta
+20
+21
+22              alpha   resw    100
+23              beta    resw    100
+24              gamma   resw    100
+25              delta   byte    c'Here is a valid string'
+26              zeta    byte    x'FF'
+27              eta     WORD    X'ABCD'
+28                      end     prog
