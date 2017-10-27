@@ -42,6 +42,7 @@ private:
     int line_number;
     int starting_address;
     int LOC_CTR;
+    int size;
 
 
     string program_name;
@@ -62,7 +63,8 @@ private:
     // Formats the address depending if it's hex or dec
     // Changes string to int
     int to_int(string operand);
-    string first_letter()
+    string first_letter(string operand);
+    string substring_quotes(string operand);
 
     /* Vector of Assembler Directives */
     string assembler_directives[8] = {"START",

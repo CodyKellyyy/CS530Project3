@@ -92,24 +92,24 @@ void sicxe_asm::parse_rows(file_parser parser) {
                 if (temp_opcode == "BYTE") {
                     token = substring_quotes(temp_operand);
                     if (first_letter(temp_operand) == "C")
-                        LOC_CTR += token.length;
+                        LOC_CTR += token.length();
                     else if (first_letter(temp_operand) == "X"){
-                        if((token.length & 1) == 1)
+                        if((token.length() & 1) == 1)
                             throw symtab_exception("Cannot have hex value with odd number of digits on line" + line_number);
-                        LOC_CTR += (token.length >> 1)
+                        LOC_CTR += (token.length() >> 1);
                     }
                 }
                 else if (temp_opcode == "RESW")
                     LOC_CTR += (3 * (to_int(temp_operand)));
                 else if (temp_opcode == "RESB")
-                    LOC_CTR += to_int(operand);
+                    LOC_CTR += to_int(temp_operand);
 
             }
         else {
                 if (temp_label != "") {
                     if (symtab.exists(temp_label))
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    else symtab.add(temp_lable, LOC_CTR);
+                    else symtab.add(temp_label, LOC_CTR);
                 }
                 size = symtab.get_size;
                 if (!found)
@@ -117,7 +117,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
                 LOC_CTR += size;
 
             }
-        write opcode,operand to line;
+        write temp_opcode,temp_operand to line;
         line = nextline;
     }
 }
