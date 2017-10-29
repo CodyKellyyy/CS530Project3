@@ -63,7 +63,7 @@ private:
     // Formats the address depending if it's hex or dec
     // Changes string to int
     int to_int(string operand);
-    string first_letter(string operand);
+    //TODO: define the substring_quotes() fxn
     string substring_quotes(string operand);
 
     /* Vector of Assembler Directives */

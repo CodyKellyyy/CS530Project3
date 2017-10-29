@@ -47,7 +47,6 @@ sicxe_asm::sicxe_asm() {}
 void sicxe_asm::parse_rows(file_parser parser) {
     //This outer loop goes through each row in the file parser
     line_number = 0;
-    line = nextline;
     while (to_upper_string(parser.get_token(line_number, OPCODE)) != "START" && line_number < parser.size()) {
         string temp_label = parser.get_token(line_number, LABEL);
         string temp_opcode = parser.get_token(line_number, OPCODE);
@@ -73,9 +72,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
                     if(symtab.symbol_exists(temp_label) == true)
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
                     symtab.add_symbol(temp_label, temp_operand);
-                }
-
-                else{
+                } else {
                     if (temp_label != "") {
                         if (symtab.symbol_exists == true)
                             throw symtab_exception("Label is already in use, reused on line " + line_number);
@@ -85,27 +82,26 @@ void sicxe_asm::parse_rows(file_parser parser) {
 
                 if (temp_opcode == "BASE")
                     base = temp_operand;
-                if (temp_opcode == "NOBASE")
+                if (to_upper_string(temp_opcode) == "NOBASE")
                     base = "";
-                if (temp_opcode == "WORD")
+                if (to_upper_string(temp_opcode) == "WORD")
                     LOC_CTR += 3;
-                if (temp_opcode == "BYTE") {
+                if (to_upper_string(temp_opcode) == "BYTE") {
                     token = substring_quotes(temp_operand);
-                    if (first_letter(temp_operand) == "C")
+                    if (toupper(temp_operand[0]) == 'C')
                         LOC_CTR += token.length();
-                    else if (first_letter(temp_operand) == "X"){
+                    else if (toupper(temp_operand[0]) == 'X'){
                         if((token.length() & 1) == 1)
                             throw symtab_exception("Cannot have hex value with odd number of digits on line" + line_number);
                         LOC_CTR += (token.length() >> 1);
                     }
                 }
-                else if (temp_opcode == "RESW")
+                else if (to_upper_string(temp_opcode) == "RESW")
                     LOC_CTR += (3 * (to_int(temp_operand)));
-                else if (temp_opcode == "RESB")
+                else if (to_upper_string(temp_opcode) == "RESB")
                     LOC_CTR += to_int(temp_operand);
 
-            }
-        else {
+            } else {
                 if (temp_label != "") {
                     if (symtab.exists(temp_label))
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
@@ -118,7 +114,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
 
             }
         write temp_opcode,temp_operand to line;
-        line = nextline;
+        line_number++;
     }
 }
 
