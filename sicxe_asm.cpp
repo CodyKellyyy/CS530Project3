@@ -6,7 +6,7 @@
 */
 
 #include "sicxe_asm.h"
-#include "file_parser.h
+#include "file_parser.h"
 #include "file_parse_exception.h"
 #include "opcodetab.h"
 #include "opcode_error_exception.h"
@@ -71,10 +71,10 @@ void sicxe_asm::parse_rows(file_parser parser) {
                         throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
                     if(symtab.symbol_exists(temp_label) == true)
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    symtab.add_symbol(temp_label, temp_operand);
+                    symtab.add_symbol(temp_label, format_address(temp_operand));
                 } else {
                     if (temp_label != "") {
-                        if (symtab.symbol_exists == true)
+                        if (symtab.symbol_exists(temp_label) == true)
                             throw symtab_exception("Label is already in use, reused on line " + line_number);
                         symtab.add_symbol(temp_label, LOC_CTR);
                     }
@@ -97,9 +97,9 @@ void sicxe_asm::parse_rows(file_parser parser) {
                     }
                 }
                 else if (to_upper_string(temp_opcode) == "RESW")
-                    LOC_CTR += (3 * (to_int(temp_operand)));
+                    LOC_CTR += (3 * (format_address(temp_operand)));
                 else if (to_upper_string(temp_opcode) == "RESB")
-                    LOC_CTR += to_int(temp_operand);
+                    LOC_CTR += format_address(temp_operand);
 
             } else {
                 if (temp_label != "") {
@@ -108,17 +108,17 @@ void sicxe_asm::parse_rows(file_parser parser) {
                     else symtab.add_symbol(temp_label,LOC_CTR);
                 }
                 size = symtab.get_size();
-                if (!found)
+                if (size == 0)
                     throw symtab_exception("Size of symtab not found");
                 LOC_CTR += size;
-
             }
-        write temp_opcode,temp_operand to line;
+        //write temp_opcode,temp_operand to line;
         line_number++;
     }
 }
 
 int sicxe_asm::format_address(string str_addr) {
+    cout << "str_addr is: " << str_addr << endl;
 
     bool is_hex;
     bool is_dec;
@@ -179,12 +179,6 @@ bool sicxe_asm::is_assm_dir(string code) {
         }
     }
 }
-
-//void sicxe_asm::add_to_symtab(string address, string label, string operand) {
-//    symtab symbol;
-//    symbol.add_symbol(string(label),int(0));
-//
-//}
 
 string sicxe_asm::to_upper_string(string s) {
     string temp = "";

@@ -38,12 +38,14 @@ public:
 
     int get_size();
 
+    //check if symbol is in table
+    bool symbol_exists(string);
+
 private:
     map<string,int> m;
     map<string,int>::iterator m_iter;
 
-    //check if symbol is in table
-    bool symbol_exists(string);
+
 
 };
 
