@@ -45,6 +45,7 @@ int main(int argc, char *argv[]){
 sicxe_asm::sicxe_asm() {}
 
 void sicxe_asm::parse_rows(file_parser parser) {
+    opcodetab opcodetab;
     //This outer loop goes through each row in the file parser
     line_number = 0;
     while (to_upper_string(parser.get_token(line_number, OPCODE)) != "START" && line_number < parser.size()) {
@@ -62,56 +63,60 @@ void sicxe_asm::parse_rows(file_parser parser) {
         program_name = parser.get_token(line_number, LABEL);
         LOC_CTR = format_address(parser.get_token(line_number, OPERANDS));
     }
+    line_number++;
     //TODO: Code the pseudocode that Sam sent in the e-mail. Start here.
     while (to_upper_string(temp_opcode) != "END"){
-        LOC_CTR = format_address(parser.get_token(line_number, OPCODE));
-            if(to_upper_string(temp_opcode) == assembler_directives[8]){
-                if(temp_opcode == "EQU"){
-                    if(temp_label == "")
-                        throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
-                    if(symtab.symbol_exists(temp_label) == true)
-                        throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    symtab.add_symbol(temp_label, format_address(temp_operand));
-                } else {
-                    if (temp_label != "") {
-                        if (symtab.symbol_exists(temp_label) == true)
-                            throw symtab_exception("Label is already in use, reused on line " + line_number);
-                        symtab.add_symbol(temp_label, LOC_CTR);
-                    }
-                }
-
-                if (temp_opcode == "BASE")
-                    base = temp_operand;
-                if (to_upper_string(temp_opcode) == "NOBASE")
-                    base = "";
-                if (to_upper_string(temp_opcode) == "WORD")
-                    LOC_CTR += 3;
-                if (to_upper_string(temp_opcode) == "BYTE") {
-                    token = substring_quotes(temp_operand);
-                    if (toupper(temp_operand[0]) == 'C')
-                        LOC_CTR += token.length();
-                    else if (toupper(temp_operand[0]) == 'X'){
-                        if((token.length() & 1) == 1)
-                            throw symtab_exception("Cannot have hex value with odd number of digits on line" + line_number);
-                        LOC_CTR += (token.length() >> 1);
-                    }
-                }
-                else if (to_upper_string(temp_opcode) == "RESW")
-                    LOC_CTR += (3 * (format_address(temp_operand)));
-                else if (to_upper_string(temp_opcode) == "RESB")
-                    LOC_CTR += format_address(temp_operand);
-
+        string temp_label = parser.get_token(line_number, LABEL);
+        string temp_opcode = parser.get_token(line_number, OPCODE);
+        string temp_operand = parser.get_token(line_number, OPERANDS);
+        if(to_upper_string(temp_opcode) == assembler_directives[8]){
+            if(temp_opcode == "EQU"){
+                if(temp_label == "")
+                    throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
+                if(symtab.symbol_exists(temp_label) == true)
+                    throw symtab_exception("Label is already in use, reused on line " + line_number);
+                symtab.add_symbol(temp_label, format_address(temp_operand));
             } else {
                 if (temp_label != "") {
-                    if (symtab.symbol_exists(temp_label))
+                    if (symtab.symbol_exists(temp_label) == true)
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    else symtab.add_symbol(temp_label,LOC_CTR);
+                    symtab.add_symbol(temp_label, LOC_CTR);
                 }
-                size = symtab.get_size();
-                if (size == 0)
-                    throw symtab_exception("Size of symtab not found");
-                LOC_CTR += size;
             }
+
+            if (temp_opcode == "BASE")
+                base = temp_operand;
+            if (to_upper_string(temp_opcode) == "NOBASE")
+                base = "";
+            if (to_upper_string(temp_opcode) == "WORD")
+                LOC_CTR += 3;
+            if (to_upper_string(temp_opcode) == "BYTE") {
+                token = substring_quotes(temp_operand);
+                if (toupper(temp_operand[0]) == 'C')
+                    LOC_CTR += token.length();
+                else if (toupper(temp_operand[0]) == 'X'){
+                    if((token.length() & 1) == 1)
+                        throw symtab_exception("Cannot have hex value with odd number of digits on line" + line_number);
+                    LOC_CTR += (token.length() >> 1);
+                }
+            }
+            else if (to_upper_string(temp_opcode) == "RESW")
+                LOC_CTR += (3 * (format_address(temp_operand)));
+            else if (to_upper_string(temp_opcode) == "RESB")
+                LOC_CTR += format_address(temp_operand);
+
+        } else {
+            if (temp_label != "") {
+                if (symtab.symbol_exists(temp_label))
+                    throw symtab_exception("Label is already in use, reused on line " + line_number);
+                else symtab.add_symbol(temp_label,LOC_CTR);
+            }
+            cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << endl;
+            size = opcodetab.get_instruction_size(temp_opcode);
+            if (size == 0)
+                throw symtab_exception("Size of Opcode not found");
+            LOC_CTR += size;
+        }
         //write temp_opcode,temp_operand to line;
         line_number++;
     }

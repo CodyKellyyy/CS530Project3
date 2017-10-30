@@ -54,5 +54,6 @@ void symtab::change_value(string key, int value) {
 }
 
 int symtab::get_size() {
+    cout << m.end()->second << " " << m.begin()->second;
     return m.end()->second - m.begin()->second;
 }
