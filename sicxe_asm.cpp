@@ -178,6 +178,10 @@ void sicxe_asm::write_headers(string fileName) {
     myfile << endl;
 }
 
+void sicxe_asm::write_to_file(int address, string label, string opcode, string operand){
+
+}
+
 
 
 bool sicxe_asm::is_assm_dir(string code) {
