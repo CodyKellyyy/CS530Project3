@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 //             "to process at the command line." << endl;
 //        exit(1);
 //    }
-    string filename = "/Users/codykelly/CLionProjects/CS530Project3/source4.txt";
+    string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
     try {
         file_parser parser(filename); //Initialize file_parser object
         symtab symbtab; //Initialize Symbol Table object

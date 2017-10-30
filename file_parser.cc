@@ -45,7 +45,7 @@ void file_parser::read_file() {
 
 string file_parser::get_token(unsigned int row, unsigned int column) {
     if (row >= size()) {
-        throw file_parse_exception("Requested token at location from nonexistent line");
+        throw file_parse_exception("Requested token at location from nonexistent line: " + to_string(row));
     }
     else if (column > 3) {
         throw file_parse_exception("Can only get token in columns 0-3. You have requested token at location");
