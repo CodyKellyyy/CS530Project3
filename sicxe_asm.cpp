@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 //             "to process at the command line." << endl;
 //        exit(1);
 //    }
-    string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
+    string filename = "/Users/codykelly/CLionProjects/CS530Project3/source4.txt";
     try {
         file_parser parser(filename); //Initialize file_parser object
         symtab symbtab; //Initialize Symbol Table object
@@ -29,7 +29,6 @@ int main(int argc, char *argv[]){
         try {
             sicxe_asm assembler;
             assembler.parse_rows(parser);
-            assembler.symtab.add_symbol("EDWIN", 24);
             assembler.symtab.print_map();
         } catch (symtab_exception& e) {
             cerr << e.getMessage() << endl;
@@ -105,6 +104,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
                 LOC_CTR += (3 * (format_address(temp_operand)));
             else if (to_upper_string(temp_opcode) == "RESB")
                 LOC_CTR += format_address(temp_operand);
+            line_number++;
 
         } else {
             if (temp_label != "") {
