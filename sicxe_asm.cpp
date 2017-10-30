@@ -70,6 +70,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
         string temp_opcode = parser.get_token(line_number, OPCODE);
         string temp_operand = parser.get_token(line_number, OPERANDS);
         if(is_assm_dir(to_upper_string(temp_opcode))){
+            cout << "IN HERE" << endl;
             if(temp_opcode == "EQU"){
                 if(temp_label == "")
                     throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
@@ -126,8 +127,6 @@ void sicxe_asm::parse_rows(file_parser parser) {
 }
 
 int sicxe_asm::format_address(string str_addr) {
-    cout << "str_addr is: " << str_addr << endl;
-
     bool is_hex;
     bool is_dec;
 
@@ -180,7 +179,7 @@ void sicxe_asm::write_to_file(string fileName) {
 
 bool sicxe_asm::is_assm_dir(string code) {
     bool found = false;
-    for (int i = 0; i < assembler_directives->length(); i++) {
+    for (int i = 0; i < 8; i++) {
         if (to_upper_string(code) == assembler_directives[i]) {
             found = true;
             return found;
