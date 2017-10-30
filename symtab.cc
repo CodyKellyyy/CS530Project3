@@ -52,3 +52,7 @@ void symtab::change_value(string key, int value) {
     symtab::delete_symbol(key);
     symtab::add_symbol(key,value);
 }
+
+int symtab::get_size() {
+    return m.end()->second - m.begin()->second;
+}

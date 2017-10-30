@@ -36,6 +36,8 @@ public:
     //Change value store at a symbol
     void change_value(string,int);
 
+    int get_size();
+
 private:
     map<string,int> m;
     map<string,int>::iterator m_iter;

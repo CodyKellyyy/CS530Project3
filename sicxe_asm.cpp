@@ -103,11 +103,11 @@ void sicxe_asm::parse_rows(file_parser parser) {
 
             } else {
                 if (temp_label != "") {
-                    if (symtab.exists(temp_label))
+                    if (symtab.symbol_exists(temp_label))
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    else symtab.add(temp_label, LOC_CTR);
+                    else symtab.add_symbol(temp_label,LOC_CTR);
                 }
-                size = symtab.get_size;
+                size = symtab.get_size();
                 if (!found)
                     throw symtab_exception("Size of symtab not found");
                 LOC_CTR += size;
@@ -192,4 +192,15 @@ string sicxe_asm::to_upper_string(string s) {
         temp += toupper(s[i]);
     }
     return temp;
+}
+
+string sicxe_asm::substring_quotes(string operand) {
+    try {
+        int first_quote = operand.find_first_of("'")+1;
+        int last_quote  = operand.find_last_of("'");
+        return operand.substr(first_quote,last_quote-first_quote);
+    } catch (symtab_exception& e) {
+        cerr << e.getMessage() << endl;
+        exit(EXIT_FAILURE);
+    }
 }

@@ -57,14 +57,14 @@ private:
 
     /* ---- Functions ---- */
     // Writes the Line number, address, label, opcode, and operand to the listing file
-    void write_to_file(string fileName);
+    void write_to_file(string);
     // Adds the symbols in the code to symtab
-    void add_to_symtab(string address, string label, string opcode);
+    void add_to_symtab(string, string, string);
     // Formats the address depending if it's hex or dec
     // Changes string to int
-    int to_int(string operand);
+    int to_int(string);
     //TODO: define the substring_quotes() fxn
-    string substring_quotes(string operand);
+    string substring_quotes(string);
 
     /* Vector of Assembler Directives */
     string assembler_directives[8] = {"START",
