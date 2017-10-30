@@ -106,6 +106,7 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
             else if (to_upper_string(temp_opcode) == "RESB")
                 LOC_CTR += format_address(temp_operand);
             line_number++;
+            write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
 
         } else {
             if (temp_label != "") {
@@ -122,6 +123,7 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
                 LOC_CTR += size;
                 line_number++;
+                write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
             }
         }
     }
@@ -162,7 +164,7 @@ int sicxe_asm::format_address(string str_addr) {
 
 void sicxe_asm::write_headers(string fileName) {
     fileName.erase((fileName.end()-3),fileName.end());
-    fileName.append("lis");
+    fileName.append(".lis");
     myfile.open(fileName);
     string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
     string secondLine[] = {"=====","=======","=====","======","======="};
@@ -178,8 +180,13 @@ void sicxe_asm::write_headers(string fileName) {
     myfile << endl;
 }
 
-void sicxe_asm::write_to_file(int address, string label, string opcode, string operand){
-
+void sicxe_asm::write_to_file(int line_num, int address, string label, string opcode, string operand){
+    myfile << line_num << "\t";
+    myfile << address << "\t";
+    myfile << label << "\t";
+    myfile << opcode << "\t";
+    myfile << operand << "\t";
+    myfile << endl;
 }
 
 
