@@ -5,6 +5,8 @@
  * Program 3
 */
 
+#include <iostream>
+#include <string>
 #include "sicxe_asm.h"
 #include "file_parser.h"
 #include "file_parse_exception.h"
@@ -123,8 +125,8 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
                 LOC_CTR += size;
                 line_number++;
-                write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
             }
+            write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
         }
     }
     myfile.close();
