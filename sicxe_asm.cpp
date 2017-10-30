@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
 
         try {
             sicxe_asm assembler;
-            assembler.parse_rows(parser);
+            assembler.parse_rows(parser, filename);
             //assembler.symtab.print_symtab();
         } catch (symtab_exception& e) {
             cerr << e.getMessage() << endl;
@@ -43,7 +43,8 @@ int main(int argc, char *argv[]){
 
 sicxe_asm::sicxe_asm() {}
 
-void sicxe_asm::parse_rows(file_parser parser) {
+void sicxe_asm::parse_rows(file_parser parser, string fileName) {
+    write_headers(fileName);//Write headers to the listing file
 
     opcodetab opcodetab;
     //This outer loop goes through each row in the file parser
@@ -124,6 +125,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
             }
         }
     }
+    myfile.close();
 }
 
 int sicxe_asm::format_address(string str_addr) {
@@ -158,13 +160,13 @@ int sicxe_asm::format_address(string str_addr) {
 }
 
 
-void sicxe_asm::write_to_file(string fileName) {
-    string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
-    string secondLine[] = {"=====","=======","=====","======","======="};
+void sicxe_asm::write_headers(string fileName) {
     fileName.erase((fileName.end()-3),fileName.end());
     fileName.append("lis");
-
     myfile.open(fileName);
+    string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
+    string secondLine[] = {"=====","=======","=====","======","======="};
+
     int i = 0;
     for (i = 0; i < 5; i++) {
         myfile << firstLine[i] << "\t";
@@ -175,6 +177,8 @@ void sicxe_asm::write_to_file(string fileName) {
     }
     myfile << endl;
 }
+
+
 
 bool sicxe_asm::is_assm_dir(string code) {
     bool found = false;

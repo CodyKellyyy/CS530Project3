@@ -26,7 +26,7 @@ class sicxe_asm {
 public:
     sicxe_asm();
     string to_upper_string(string);
-    void parse_rows(file_parser);
+    void parse_rows(file_parser, string);
     int format_address(string);
     bool is_assm_dir(string);
     symtab symtab;
@@ -57,7 +57,7 @@ private:
 
     /* ---- Functions ---- */
     // Writes the Line number, address, label, opcode, and operand to the listing file
-    void write_to_file(string);
+    void write_headers(string);
     // Adds the symbols in the code to symtab
     void add_to_symtab(string, string, string);
     // Formats the address depending if it's hex or dec
