@@ -31,6 +31,7 @@ string opcodetab::get_machine_code(string code) {
         }
     } catch (opcode_error_exception& e) {
         cerr << e.getMessage() << endl;
+        return "";
     }
 
 }
@@ -40,12 +41,12 @@ int opcodetab::get_instruction_size(string code) {
         code = remove_first_plus_sign(code);
         code = to_upper_string(code);
         if (opcode_exists(code)) {
-            return m[code].first;
+            return (m[code].second + has_plus);
         }
     } catch (opcode_error_exception& e) {
         cerr << e.getMessage() << endl;
+        return 0;
     }
-
 }
 
 int opcodetab::get_bytes_size() {
@@ -67,8 +68,14 @@ void opcodetab::print_map() {
 }
 
 bool opcodetab::opcode_exists(string code) {
-    if (m.find(code) == m.end())
+    if (m.find(code) == m.end()) {
         throw opcode_error_exception("Opcode " + code + " was not found.");
+        return false;
+    }
+    if ((m[code].second != 3) && (has_plus == 1)){
+        throw opcode_error_exception("Opcode " + code + " cannot have a plus in front of it. 0 is returned by default.");
+        return false;
+    }
     return true;
 }
 
@@ -82,8 +89,10 @@ string opcodetab::to_upper_string(string s) {
 
 string opcodetab::remove_first_plus_sign(string in) {
     if (in.length() > 0 && in[0] == '+') {
+        has_plus = 1;
         return in.substr(1, in.length());
     } else {
+        has_plus = 0;
         return in;
     }
 }

@@ -112,13 +112,16 @@ void sicxe_asm::parse_rows(file_parser parser) {
                 else symtab.add_symbol(temp_label,LOC_CTR);
             }
             cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << endl;
-            size = opcodetab.get_instruction_size(temp_opcode);
-            if (size == 0)
-                throw symtab_exception("Size of Opcode not found");
-            LOC_CTR += size;
+            if (temp_opcode == "") {
+                line_number++;
+            } else {
+                size = opcodetab.get_instruction_size(temp_opcode);
+                if (size == 0)
+                    throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
+                LOC_CTR += size;
+                line_number++;
+            }
         }
-        //write temp_opcode,temp_operand to line;
-        line_number++;
     }
 }
 
