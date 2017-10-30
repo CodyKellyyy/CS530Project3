@@ -37,7 +37,7 @@ void symtab::delete_symbol(string key) {
     }
 }
 
-void symtab::print_map() {
+void symtab::print_symtab() {
     for (m_iter = m.begin(); m_iter != m.end(); m_iter++)
         cout << "Symbol: " << m_iter->first << "\tAddress: " << m_iter->second << endl;
 }

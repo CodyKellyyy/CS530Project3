@@ -31,7 +31,7 @@ public:
     void delete_symbol(string);
 
     //Print map (FOR DEBUG PURPOSES ONLY)
-    void print_map();
+    void print_symtab();
 
     //Change value store at a symbol
     void change_value(string,int);

@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
         try {
             sicxe_asm assembler;
             assembler.parse_rows(parser);
-            assembler.symtab.print_map();
+            //assembler.symtab.print_symtab();
         } catch (symtab_exception& e) {
             cerr << e.getMessage() << endl;
             exit(EXIT_FAILURE);
@@ -44,6 +44,7 @@ int main(int argc, char *argv[]){
 sicxe_asm::sicxe_asm() {}
 
 void sicxe_asm::parse_rows(file_parser parser) {
+
     opcodetab opcodetab;
     //This outer loop goes through each row in the file parser
     line_number = 0;
@@ -64,12 +65,11 @@ void sicxe_asm::parse_rows(file_parser parser) {
     }
     line_number++;
     //TODO: Code the pseudocode that Sam sent in the e-mail. Start here.
-    while (to_upper_string(temp_opcode) != "END"){
+    while (line_number < parser.size()){
         string temp_label = parser.get_token(line_number, LABEL);
         string temp_opcode = parser.get_token(line_number, OPCODE);
         string temp_operand = parser.get_token(line_number, OPERANDS);
         if(is_assm_dir(to_upper_string(temp_opcode))){
-            cout << "IN HERE" << endl;
             if(temp_opcode == "EQU"){
                 if(temp_label == "")
                     throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
@@ -112,7 +112,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
                 else symtab.add_symbol(temp_label,LOC_CTR);
             }
-            cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << " LOC_CTR: " << LOC_CTR << endl;
+            //cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << " LOC_CTR: " << LOC_CTR << endl;
             if (temp_opcode == "") {
                 line_number++;
             } else {
@@ -159,7 +159,7 @@ int sicxe_asm::format_address(string str_addr) {
 
 
 void sicxe_asm::write_to_file(string fileName) {
-    string firstLine[] = {"Line#","Address","Lable","Opcode","Operand"};
+    string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
     string secondLine[] = {"=====","=======","=====","======","======="};
     fileName.erase((fileName.end()-3),fileName.end());
     fileName.append("lis");
@@ -174,7 +174,6 @@ void sicxe_asm::write_to_file(string fileName) {
         myfile << secondLine[i] << "\t";
     }
     myfile << endl;
-
 }
 
 bool sicxe_asm::is_assm_dir(string code) {
