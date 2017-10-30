@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
     string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
     try {
         file_parser parser(filename); //Initialize file_parser object
-        symtab symbtab; //Initialize Symbol Table object
+        symtab symbtable; //Initialize Symbol Table object
 
         parser.read_file(); //Read the file (tokenize it)
 
@@ -74,14 +74,14 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
             if(temp_opcode == "EQU"){
                 if(temp_label == "")
                     throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
-                if(symtab.symbol_exists(temp_label) == true)
+                if(symtable.symbol_exists(temp_label) == true)
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
-                symtab.add_symbol(temp_label, format_address(temp_operand));
+                symtable.add_symbol(temp_label, format_address(temp_operand));
             } else {
                 if (temp_label != "") {
-                    if (symtab.symbol_exists(temp_label) == true)
+                    if (symtable.symbol_exists(temp_label) == true)
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    symtab.add_symbol(temp_label, LOC_CTR);
+                    symtable.add_symbol(temp_label, LOC_CTR);
                 }
             }
 
@@ -110,9 +110,9 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
 
         } else {
             if (temp_label != "") {
-                if (symtab.symbol_exists(temp_label))
+                if (symtable.symbol_exists(temp_label))
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
-                else symtab.add_symbol(temp_label,LOC_CTR);
+                else symtable.add_symbol(temp_label,LOC_CTR);
             }
             //cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << " LOC_CTR: " << LOC_CTR << endl;
             if (temp_opcode == "") {
@@ -144,6 +144,7 @@ int sicxe_asm::format_address(string str_addr) {
     }
 
     if (is_hex) {
+        string temp = "";
         string temp = "";
         for (int i = 0; i < str_addr.length(); i++) {
             if (isdigit(str_addr[i]))
