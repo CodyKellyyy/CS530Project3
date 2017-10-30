@@ -69,7 +69,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
         string temp_label = parser.get_token(line_number, LABEL);
         string temp_opcode = parser.get_token(line_number, OPCODE);
         string temp_operand = parser.get_token(line_number, OPERANDS);
-        if(to_upper_string(temp_opcode) == assembler_directives[8]){
+        if(is_assm_dir(to_upper_string(temp_opcode))){
             if(temp_opcode == "EQU"){
                 if(temp_label == "")
                     throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
@@ -111,7 +111,7 @@ void sicxe_asm::parse_rows(file_parser parser) {
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
                 else symtab.add_symbol(temp_label,LOC_CTR);
             }
-            cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << endl;
+            cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << " LOC_CTR: " << LOC_CTR << endl;
             if (temp_opcode == "") {
                 line_number++;
             } else {

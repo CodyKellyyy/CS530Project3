@@ -62,7 +62,7 @@ private:
     void add_to_symtab(string, string, string);
     // Formats the address depending if it's hex or dec
     // Changes string to int
-    int to_int(string);
+    //int to_int(string);
     //TODO: define the substring_quotes() fxn
     string substring_quotes(string);
 
