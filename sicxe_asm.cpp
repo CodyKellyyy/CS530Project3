@@ -18,7 +18,7 @@
 
 int main(int argc, char *argv[]){
 
-    string filename = "/Users/tommyvalenta/CLionProjects/CS530Project3/source1.txt";
+    string filename = "/Users/tommyvalenta/CLionProjects/CS530Project3/source2.txt";
     try {
         file_parser parser(filename); //Initialize file_parser object
         symtab symbtable; //Initialize Symbol Table object
@@ -176,21 +176,21 @@ void sicxe_asm::write_headers(string fileName) {
 
     int i = 0;
     for (i = 0; i < 5; i++) {
-        myfile << setw(10) << firstLine[i];
+        myfile << setw(10) << std::left << firstLine[i];
     }
     myfile << "\n";
     for (i = 0; i < 5; i++) {
-        myfile << setw(10) << secondLine[i];
+        myfile << setw(10) << std::left << secondLine[i];
     }
     myfile << "\n";
 }
 
 void sicxe_asm::write_to_file(int line_num, int address, string label, string opcode, string operand){
-    myfile << setw(10) << line_num;
-    myfile << setw(10) << address;
-    myfile << setw(10) << label;
-    myfile << setw(10) << opcode;
-    myfile << setw(10) << operand;
+    myfile << setw(10) << std::left << line_num;
+    myfile << setw(10) << std::left << address;
+    myfile << setw(10) << std::left << label;
+    myfile << setw(10) << std::left << opcode;
+    myfile << setw(10) << std::left << operand;
     myfile << "\n";
 }
 
