@@ -61,7 +61,7 @@ private:
     // Adds the symbols in the code to symtab
     void add_to_symtab(string, string, string);
     //Writes to the listing files
-    void write_to_file(int, string, string, string);
+    void write_to_file(int, int, string, string, string);
     // Formats the address depending if it's hex or dec
     // Changes string to int
     //int to_int(string);
