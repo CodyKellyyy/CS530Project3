@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include "sicxe_asm.h"
 #include "file_parser.h"
@@ -153,7 +154,7 @@ int sicxe_asm::format_address(string str_addr) {
             if (isdigit(str_addr[i]))
                 temp += str_addr[i];
         }
-        return stoi(temp);
+        return string_to_int(temp);
     }
     else if (is_dec) {
         string temp = "";
@@ -161,36 +162,36 @@ int sicxe_asm::format_address(string str_addr) {
             if (isdigit(str_addr[i]))
                 temp += str_addr[i];
         }
-        return stoi(temp,nullptr,16);
+        return string_to_int(temp);
     }
 }
 
 
 void sicxe_asm::write_headers(string fileName) {
     fileName.erase((fileName.end()-3),fileName.end());
-    fileName.append(".lis");
+    fileName.append("lis");
     myfile.open(fileName);
     string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
     string secondLine[] = {"=====","=======","=====","======","======="};
 
     int i = 0;
     for (i = 0; i < 5; i++) {
-        myfile << firstLine[i] << "\t";
+        myfile << setw(10) << firstLine[i];
     }
-    myfile << endl;
+    myfile << "\n";
     for (i = 0; i < 5; i++) {
-        myfile << secondLine[i] << "\t";
+        myfile << setw(10) << secondLine[i];
     }
-    myfile << endl;
+    myfile << "\n";
 }
 
 void sicxe_asm::write_to_file(int line_num, int address, string label, string opcode, string operand){
-    myfile << line_num << "\t";
-    myfile << address << "\t";
-    myfile << label << "\t";
-    myfile << opcode << "\t";
-    myfile << operand << "\t";
-    myfile << endl;
+    myfile << setw(10) << line_num;
+    myfile << setw(10) << address;
+    myfile << setw(10) << label;
+    myfile << setw(10) << opcode;
+    myfile << setw(10) << operand;
+    myfile << "\n";
 }
 
 
@@ -228,7 +229,7 @@ int sicxe_asm::string_to_int(string i) {
     if(i[0] == '#' || i[0] == '$' || i[0] == '@') {
         i.erase(0,1);
     }
-    int output;
-    sscanf(i.c_str(),"%x",&output);
-    return output;
+    int intOut;
+    sscanf(i.c_str(),"%x",&intOut);
+    return intOut;
 }
