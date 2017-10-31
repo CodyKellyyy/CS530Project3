@@ -64,7 +64,7 @@ private:
     void write_to_file(int, int, string, string, string);
     // Formats the address depending if it's hex or dec
     // Changes string to int
-    //int to_int(string);
+    int string_to_int(string);
     //TODO: define the substring_quotes() fxn
     string substring_quotes(string);
 

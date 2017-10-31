@@ -16,12 +16,8 @@
 #include "symtab_exception.h"
 
 int main(int argc, char *argv[]){
-    //    if(argc != 2) {
-//        cout << "Error, you must supply the name of the file " <<
-//             "to process at the command line." << endl;
-//        exit(1);
-//    }
-    string filename = "/Users/tommyvalenta/CLionProjects/CS530Project3/source4.txt";
+
+    string filename = "/Users/tommyvalenta/CLionProjects/CS530Project3/source1.txt";
     try {
         file_parser parser(filename); //Initialize file_parser object
         symtab symbtable; //Initialize Symbol Table object
@@ -151,7 +147,7 @@ int sicxe_asm::format_address(string str_addr) {
             if (isdigit(str_addr[i]))
                 temp += str_addr[i];
         }
-        return stoi(temp, nullptr, 16);
+        return string_to_int(temp);
     }
     else if (is_dec) {
         string temp = "";
@@ -159,7 +155,7 @@ int sicxe_asm::format_address(string str_addr) {
             if (isdigit(str_addr[i]))
                 temp += str_addr[i];
         }
-        return stoi(temp);
+        return string_to_int(temp);
     }
 }
 
@@ -220,4 +216,13 @@ string sicxe_asm::substring_quotes(string operand) {
         cerr << e.getMessage() << endl;
         exit(EXIT_FAILURE);
     }
+}
+
+int sicxe_asm::string_to_int(string s) {
+    if(s[0] == '$' || s[0] == '#' || s[0] == '@') {
+        s.erase(0,1);
+    }
+    int output;
+    sscanf(s.c_str(),"%x",&output);
+    return output;
 }
