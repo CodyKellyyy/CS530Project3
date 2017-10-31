@@ -55,7 +55,12 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
         if (temp_label != "" || temp_opcode != "" || temp_operand != "")
             throw symtab_exception("Invalid syntax before 'START' opcode on line " + line_number);
         line_number++;
+        write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
     }
+
+    string temp_label = parser.get_token(line_number, LABEL);
+    string temp_opcode = parser.get_token(line_number, OPCODE);
+    string temp_operand = parser.get_token(line_number, OPERANDS);
     if (line_number == parser.size()) {
         throw symtab_exception("'START' directive not found");
     } else {
@@ -63,7 +68,8 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
         LOC_CTR = format_address(parser.get_token(line_number, OPERANDS));
     }
     line_number++;
-    //TODO: Code the pseudocode that Sam sent in the e-mail. Start here.
+    write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
+
     while (line_number < parser.size()){
         string temp_label = parser.get_token(line_number, LABEL);
         string temp_opcode = parser.get_token(line_number, OPCODE);
@@ -147,7 +153,7 @@ int sicxe_asm::format_address(string str_addr) {
             if (isdigit(str_addr[i]))
                 temp += str_addr[i];
         }
-        return string_to_int(temp);
+        return stoi(temp);
     }
     else if (is_dec) {
         string temp = "";
@@ -155,7 +161,7 @@ int sicxe_asm::format_address(string str_addr) {
             if (isdigit(str_addr[i]))
                 temp += str_addr[i];
         }
-        return string_to_int(temp);
+        return stoi(temp,nullptr,16);
     }
 }
 
@@ -218,11 +224,11 @@ string sicxe_asm::substring_quotes(string operand) {
     }
 }
 
-int sicxe_asm::string_to_int(string s) {
-    if(s[0] == '$' || s[0] == '#' || s[0] == '@') {
-        s.erase(0,1);
+int sicxe_asm::string_to_int(string i) {
+    if(i[0] == '#' || i[0] == '$' || i[0] == '@') {
+        i.erase(0,1);
     }
     int output;
-    sscanf(s.c_str(),"%x",&output);
+    sscanf(i.c_str(),"%x",&output);
     return output;
 }
