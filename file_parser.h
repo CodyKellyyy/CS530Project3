@@ -47,6 +47,7 @@ private:
     // your variables and private methods go here
     string filename;
     int length;
+    string to_string(int);
 
     class row {
     public:

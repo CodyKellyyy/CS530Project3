@@ -213,4 +213,8 @@ void file_parser::replace_all(string& source, string const& in, string const& ou
         source.replace(i, in.length(), out);
         i += out.length();
     }
+
+string file_parser::to_string(int) {
+
+}
 }
