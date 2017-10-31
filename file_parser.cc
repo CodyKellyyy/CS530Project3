@@ -4,6 +4,7 @@
 #include "file_parser.h"
 #include "file_parse_exception.h"
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <algorithm>
 #include <cstdlib>
@@ -70,6 +71,12 @@ void file_parser::print_file() {
 
 int file_parser::size() {
     return length;
+}
+
+string file_parser::to_string(int n) {
+    ostringstream stream;
+    stream << n;
+    return stream.str();
 }
 
 // Define "row" functions
@@ -206,15 +213,9 @@ int file_parser::row::string_is_alpha_num(string str) {
         return 1;
 }
 
-void file_parser::replace_all(string& source, string const& in, string const& out)
-{
-    for(string::size_type i = 0; (i = source.find(in, i)) != string::npos;)
-    {
+void file_parser::replace_all(string& source, string const& in, string const& out) {
+    for (string::size_type i = 0; (i = source.find(in, i)) != string::npos;) {
         source.replace(i, in.length(), out);
         i += out.length();
     }
-
-string file_parser::to_string(int) {
-
-}
 }
