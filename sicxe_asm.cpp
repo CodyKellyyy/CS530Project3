@@ -7,8 +7,10 @@
 
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 #include <string>
 #include "sicxe_asm.h"
+//#include "file_parser.cc"
 #include "file_parser.h"
 #include "file_parse_exception.h"
 #include "opcodetab.h"
@@ -223,6 +225,12 @@ string sicxe_asm::substring_quotes(string operand) {
         cerr << e.getMessage() << endl;
         exit(EXIT_FAILURE);
     }
+}
+
+string sicxe_asm::to_string(int n) {
+    ostringstream stream;
+    stream << n;
+    return stream.str();
 }
 
 int sicxe_asm::string_to_int(string i) {

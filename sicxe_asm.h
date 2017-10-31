@@ -43,6 +43,7 @@ private:
     int starting_address;
     int LOC_CTR;
     int size;
+    string to_string(int);
 
 
     string program_name;
