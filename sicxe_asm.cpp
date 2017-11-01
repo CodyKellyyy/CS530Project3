@@ -45,7 +45,7 @@ sicxe_asm::sicxe_asm(string filename) {
 void sicxe_asm::parse_rows() {
     write_headers();//Write headers to the listing file
 
-    opcodetab opcodetab;
+    opcodetab* opcodetable = new opcodetab();
     //This outer loop goes through each row in the file parser
     line_number = 0;
     while (to_upper_string(parser->get_token(line_number, OPCODE)) != "START" && line_number < parser->size()) {
@@ -123,11 +123,11 @@ void sicxe_asm::parse_rows() {
             if (temp_opcode == "") {
                 line_number++;
             } else {
-                size = opcodetab.get_instruction_size(temp_opcode);
+                size = opcodetable->get_instruction_size(temp_opcode);
                 if (size == 0)
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
-                LOC_CTR += size;
-                line_number++;
+                LOC_CTR = LOC_CTR + size;
+                line_number = line_number + 1;
             }
             write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
         }
