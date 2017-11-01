@@ -34,7 +34,6 @@ public:
     int format_address(string);
     bool is_assm_dir(string);
     symtab *symtable;
-    int dec_to_hex(int);
 
 
 
@@ -47,6 +46,7 @@ private:
     int LOC_CTR;
     int size;
     file_parser *parser;
+    opcodetab* opcodetable;
 
     string file_name;
     string program_name;
