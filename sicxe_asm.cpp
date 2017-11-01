@@ -135,6 +135,12 @@ void sicxe_asm::parse_rows() {
     myfile.close();
 }
 
+string sicxe_asm::to_string(int i) {
+    ostringstream stream;
+    stream << i;
+    return stream.str();
+}
+
 int sicxe_asm::format_address(string str_addr) {
     bool is_hex = false;
 
@@ -171,7 +177,7 @@ void sicxe_asm::write_headers() {
     string fileName = this->file_name;
     fileName.erase((fileName.end()-3),fileName.end());
     fileName.append("lis");
-    myfile.open(fileName);
+    myfile.open(fileName.c_str());
     string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
     string secondLine[] = {"=====","=======","=====","======","======="};
 

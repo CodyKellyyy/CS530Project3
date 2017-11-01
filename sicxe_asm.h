@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 
 #include "file_parser.h"
 #include "file_parse_exception.h"
@@ -28,6 +29,7 @@ class sicxe_asm {
 public:
     sicxe_asm(string);
     string to_upper_string(string);
+    string to_string(int);
     void parse_rows();
     int format_address(string);
     bool is_assm_dir(string);
