@@ -32,6 +32,7 @@ public:
     int format_address(string);
     bool is_assm_dir(string);
     symtab *symtable;
+    int dec_to_hex(int);
 
 
 
@@ -39,8 +40,6 @@ private:
 
     /* ---- Members ---- */
     // All values to be put into list file
-
-
     int line_number;
     int starting_address;
     int LOC_CTR;

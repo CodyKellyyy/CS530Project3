@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include "sicxe_asm.h"
 #include "file_parser.h"
 #include "file_parse_exception.h"
@@ -18,6 +19,7 @@
 
 int main(int argc, char *argv[]){
 
+    //string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
     string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
@@ -134,34 +136,34 @@ void sicxe_asm::parse_rows() {
 }
 
 int sicxe_asm::format_address(string str_addr) {
-    bool is_hex;
-    bool is_dec;
+    bool is_hex = false;
 
     size_t found_hex = str_addr.find("$");
     if (found_hex != string::npos) {
         is_hex = true;
-        is_dec = false;
-    } else {
-        is_dec = true;
-        is_hex = false;
     }
 
+    string temp = "";
+    for (int i = 0; i < str_addr.length(); i++) {
+        if (isdigit(str_addr[i]))
+            temp += str_addr[i];
+    }
+
+    int answer = string_to_int(temp);
+
     if (is_hex) {
-        string temp = "";
-        for (int i = 0; i < str_addr.length(); i++) {
-            if (isdigit(str_addr[i]))
-                temp += str_addr[i];
-        }
-        return string_to_int(temp);
+        int x;
+        std::stringstream ss;
+        ss << std::hex << temp;
+        ss >> x;
+        return x;
+    } else {
+        return answer;
     }
-    else if (is_dec) {
-        string temp = "";
-        for (int i = 0; i < str_addr.length(); i++) {
-            if (isdigit(str_addr[i]))
-                temp += str_addr[i];
-        }
-        return string_to_int(temp);
-    }
+}
+
+int sicxe_asm::dec_to_hex(int value) {
+
 }
 
 
@@ -225,10 +227,7 @@ string sicxe_asm::substring_quotes(string operand) {
 }
 
 int sicxe_asm::string_to_int(string i) {
-    if(i[0] == '#' || i[0] == '$' || i[0] == '@') {
-        i.erase(0,1);
-    }
-    int intOut;
-    sscanf(i.c_str(),"%x",&intOut);
-    return intOut;
+    int n;
+    sscanf(i.c_str(), "%d", &n);
+    return n;
 }
