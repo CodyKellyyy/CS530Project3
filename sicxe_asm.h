@@ -33,7 +33,7 @@ public:
     void parse_rows();
     int format_address(string);
     bool is_assm_dir(string);
-    symtab *symtable;
+    symtab symtable;
 
 
 
@@ -46,7 +46,7 @@ private:
     int LOC_CTR;
     int size;
     file_parser *parser;
-    opcodetab* opcodetable;
+    opcodetab opcodetable;
 
     string file_name;
     string program_name;

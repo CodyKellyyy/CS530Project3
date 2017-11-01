@@ -39,13 +39,11 @@ sicxe_asm::sicxe_asm(string filename) {
         cerr << e.getMessage() << endl;
         exit(EXIT_FAILURE);
     }
-    symtable = new symtab(); //Initialize Symbol Table object
 }
 
 void sicxe_asm::parse_rows() {
     write_headers();//Write headers to the listing file
 
-    opcodetable = new opcodetab();
     //This outer loop goes through each row in the file parser
     line_number = 0;
     while (to_upper_string(parser->get_token(line_number, OPCODE)) != "START" && line_number < parser->size()) {
@@ -79,14 +77,14 @@ void sicxe_asm::parse_rows() {
             if(temp_opcode == "EQU"){
                 if(temp_label == "")
                     throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
-                if(symtable->symbol_exists(temp_label) == true)
+                if(symtable.symbol_exists(temp_label) == true)
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
-                symtable->add_symbol(temp_label, format_address(temp_operand));
+                symtable.add_symbol(temp_label, format_address(temp_operand));
             } else {
                 if (temp_label != "") {
-                    if (symtable->symbol_exists(temp_label) == true)
+                    if (symtable.symbol_exists(temp_label) == true)
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    symtable->add_symbol(temp_label, LOC_CTR);
+                    symtable.add_symbol(temp_label, LOC_CTR);
                 }
             }
 
@@ -115,16 +113,16 @@ void sicxe_asm::parse_rows() {
 
         } else {
             if (temp_label != "") {
-                if (symtable->symbol_exists(temp_label))
+                if (symtable.symbol_exists(temp_label))
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
-                else symtable->add_symbol(temp_label,LOC_CTR);
+                else symtable.add_symbol(temp_label,LOC_CTR);
             }
             //cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << " LOC_CTR: " << LOC_CTR << endl;
             if (temp_opcode == "") {
                 line_number++;
                 write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
             } else {
-                size = opcodetable->get_instruction_size(temp_opcode);
+                size = opcodetable.get_instruction_size(temp_opcode);
                 if (size == 0)
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
                 LOC_CTR = LOC_CTR + size;
