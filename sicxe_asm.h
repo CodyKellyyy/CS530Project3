@@ -21,15 +21,17 @@
 #include "symtab.h"
 #include "symtab_exception.h"
 
+using namespace std;
+
 class sicxe_asm {
 
 public:
-    sicxe_asm();
+    sicxe_asm(string);
     string to_upper_string(string);
-    void parse_rows(file_parser, string);
+    void parse_rows();
     int format_address(string);
     bool is_assm_dir(string);
-    symtab symtab;
+    symtab *symtable;
 
 
 
@@ -43,13 +45,10 @@ private:
     int starting_address;
     int LOC_CTR;
     int size;
+    file_parser *parser;
 
-
+    string file_name;
     string program_name;
-    string address;
-    string temp_label;
-    string temp_opcode;
-    string temp_operand;
     string token;
     string base;
 
@@ -57,9 +56,7 @@ private:
 
     /* ---- Functions ---- */
     // Writes the Line number, address, label, opcode, and operand to the listing file
-    void write_headers(string);
-    // Adds the symbols in the code to symtab
-    void add_to_symtab(string, string, string);
+    void write_headers();
     //Writes to the listing files
     void write_to_file(int, int, string, string, string);
     // Formats the address depending if it's hex or dec
