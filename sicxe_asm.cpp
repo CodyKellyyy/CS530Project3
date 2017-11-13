@@ -200,7 +200,7 @@ void sicxe_asm::write_to_file(int line_num, int address, string label, string op
 
 bool sicxe_asm::is_assm_dir(string code) {
     bool found = false;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 9; i++) {
         if (to_upper_string(code) == assembler_directives[i]) {
             found = true;
             return found;

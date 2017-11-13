@@ -67,8 +67,9 @@ private:
     string substring_quotes(string);
 
     /* Vector of Assembler Directives */
-    string assembler_directives[8] = {"START",
+    string assembler_directives[9] = {"START",
                                       "END",
+                                      "EQU",
                                       "BYTE",
                                       "WORD",
                                       "RESB",
