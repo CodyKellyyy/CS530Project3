@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <sstream>
 #include "sicxe_asm.h"
 //#include "file_parser.cc"
 #include "file_parser.h"
@@ -20,40 +21,37 @@
 
 int main(int argc, char *argv[]){
 
-    string filename = "/Users/tommyvalenta/CLionProjects/CS530Project3/source1.txt";
+    //string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
+    string filename = argv[1];
     try {
-        file_parser parser(filename); //Initialize file_parser object
-        symtab symbtable; //Initialize Symbol Table object
-
-        parser.read_file(); //Read the file (tokenize it)
-
-        try {
-            sicxe_asm assembler;
-            assembler.parse_rows(parser, filename);
-            //assembler.symtab.print_symtab();
-        } catch (symtab_exception& e) {
-            cerr << e.getMessage() << endl;
-            exit(EXIT_FAILURE);
-        }
+        sicxe_asm assembler(filename);
+        assembler.parse_rows();
+    } catch (exception& e) {
+        cerr << e.what() << endl;
+        exit(EXIT_FAILURE);
     }
-    catch(file_parse_exception excpt) {
-        cerr << "**Sorry, error: " << excpt.getMessage() << endl;
-    }
-
 }
 
-sicxe_asm::sicxe_asm() {}
+sicxe_asm::sicxe_asm(string filename) {
+    file_name = filename;
+    try {
+        parser = new file_parser(file_name); //Initialize file_parser object
+        parser->read_file(); //Read the file (tokenize it)
+    } catch (file_parse_exception& e) {
+        cerr << e.getMessage() << endl;
+        exit(EXIT_FAILURE);
+    }
+}
 
-void sicxe_asm::parse_rows(file_parser parser, string fileName) {
-    write_headers(fileName);//Write headers to the listing file
+void sicxe_asm::parse_rows() {
+    write_headers();//Write headers to the listing file
 
-    opcodetab opcodetab;
     //This outer loop goes through each row in the file parser
     line_number = 0;
-    while (to_upper_string(parser.get_token(line_number, OPCODE)) != "START" && line_number < parser.size()) {
-        string temp_label = parser.get_token(line_number, LABEL);
-        string temp_opcode = parser.get_token(line_number, OPCODE);
-        string temp_operand = parser.get_token(line_number, OPERANDS);
+    while (to_upper_string(parser->get_token(line_number, OPCODE)) != "START" && line_number < parser->size()) {
+        string temp_label = parser->get_token(line_number, LABEL);
+        string temp_opcode = parser->get_token(line_number, OPCODE);
+        string temp_operand = parser->get_token(line_number, OPERANDS);
 
         if (temp_label != "" || temp_opcode != "" || temp_operand != "")
             throw symtab_exception("Invalid syntax before 'START' opcode on line " + line_number);
@@ -61,34 +59,34 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
         write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
     }
 
-    string temp_label = parser.get_token(line_number, LABEL);
-    string temp_opcode = parser.get_token(line_number, OPCODE);
-    string temp_operand = parser.get_token(line_number, OPERANDS);
-    if (line_number == parser.size()) {
+    string temp_label = parser->get_token(line_number, LABEL);
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+    string temp_operand = parser->get_token(line_number, OPERANDS);
+    if (line_number == parser->size()) {
         throw symtab_exception("'START' directive not found");
     } else {
-        program_name = parser.get_token(line_number, LABEL);
-        LOC_CTR = format_address(parser.get_token(line_number, OPERANDS));
+        program_name = parser->get_token(line_number, LABEL);
+        LOC_CTR = format_address(parser->get_token(line_number, OPERANDS));
     }
     line_number++;
     write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
 
-    while (line_number < parser.size()){
-        string temp_label = parser.get_token(line_number, LABEL);
-        string temp_opcode = parser.get_token(line_number, OPCODE);
-        string temp_operand = parser.get_token(line_number, OPERANDS);
+    while (line_number < parser->size()){
+        string temp_label = parser->get_token(line_number, LABEL);
+        string temp_opcode = parser->get_token(line_number, OPCODE);
+        string temp_operand = parser->get_token(line_number, OPERANDS);
         if(is_assm_dir(to_upper_string(temp_opcode))){
             if(temp_opcode == "EQU"){
                 if(temp_label == "")
                     throw symtab_exception("Invalid syntax on 'EQU' opcode on line " + line_number);
-                if(symtab.symbol_exists(temp_label) == true)
+                if(symtable.symbol_exists(temp_label) == true)
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
-                symtab.add_symbol(temp_label, format_address(temp_operand));
+                symtable.add_symbol(temp_label, format_address(temp_operand));
             } else {
                 if (temp_label != "") {
-                    if (symtab.symbol_exists(temp_label) == true)
+                    if (symtable.symbol_exists(temp_label) == true)
                         throw symtab_exception("Label is already in use, reused on line " + line_number);
-                    symtab.add_symbol(temp_label, LOC_CTR);
+                    symtable.add_symbol(temp_label, LOC_CTR);
                 }
             }
 
@@ -117,62 +115,66 @@ void sicxe_asm::parse_rows(file_parser parser, string fileName) {
 
         } else {
             if (temp_label != "") {
-                if (symtab.symbol_exists(temp_label))
+                if (symtable.symbol_exists(temp_label))
                     throw symtab_exception("Label is already in use, reused on line " + line_number);
-                else symtab.add_symbol(temp_label,LOC_CTR);
+                else symtable.add_symbol(temp_label,LOC_CTR);
             }
             //cout << "Temp label: "  << temp_label << " Temp Opcode: " << temp_opcode << " LOC_CTR: " << LOC_CTR << endl;
             if (temp_opcode == "") {
                 line_number++;
+                write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
             } else {
-                size = opcodetab.get_instruction_size(temp_opcode);
+                size = opcodetable.get_instruction_size(temp_opcode);
                 if (size == 0)
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
-                LOC_CTR += size;
-                line_number++;
+                LOC_CTR = LOC_CTR + size;
+                line_number = line_number + 1;
+                write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
             }
-            write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
+
         }
     }
     myfile.close();
 }
 
+string sicxe_asm::to_string(int i) {
+    ostringstream stream;
+    stream << i;
+    return stream.str();
+}
+
 int sicxe_asm::format_address(string str_addr) {
-    bool is_hex;
-    bool is_dec;
+    bool is_hex = false;
 
     size_t found_hex = str_addr.find("$");
     if (found_hex != string::npos) {
         is_hex = true;
-        is_dec = false;
-    } else {
-        is_dec = true;
-        is_hex = false;
     }
 
-    if (is_hex) {
-        string temp = "";
-        for (int i = 0; i < str_addr.length(); i++) {
-            if (isdigit(str_addr[i]))
-                temp += str_addr[i];
-        }
-        return string_to_int(temp);
+    string temp = "";
+    for (int i = 0; i < str_addr.length(); i++) {
+        if (isdigit(str_addr[i]))
+            temp += str_addr[i];
     }
-    else if (is_dec) {
-        string temp = "";
-        for (int i = 0; i < str_addr.length(); i++) {
-            if (isdigit(str_addr[i]))
-                temp += str_addr[i];
-        }
-        return string_to_int(temp);
+
+    int answer = string_to_int(temp);
+
+    if (is_hex) {
+        int x;
+        std::stringstream ss;
+        ss << std::hex << temp;
+        ss >> x;
+        return x;
+    } else {
+        return answer;
     }
 }
 
-
-void sicxe_asm::write_headers(string fileName) {
+void sicxe_asm::write_headers() {
+    string fileName = this->file_name;
     fileName.erase((fileName.end()-3),fileName.end());
     fileName.append("lis");
-    myfile.open(fileName);
+    myfile.open(fileName.c_str());
     string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
     string secondLine[] = {"=====","=======","=====","======","======="};
 
@@ -200,7 +202,7 @@ void sicxe_asm::write_to_file(int line_num, int address, string label, string op
 
 bool sicxe_asm::is_assm_dir(string code) {
     bool found = false;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 9; i++) {
         if (to_upper_string(code) == assembler_directives[i]) {
             found = true;
             return found;
@@ -234,10 +236,7 @@ string sicxe_asm::to_string(int n) {
 }
 
 int sicxe_asm::string_to_int(string i) {
-    if(i[0] == '#' || i[0] == '$' || i[0] == '@') {
-        i.erase(0,1);
-    }
-    int intOut;
-    sscanf(i.c_str(),"%x",&intOut);
-    return intOut;
+    int n;
+    sscanf(i.c_str(), "%d", &n);
+    return n;
 }

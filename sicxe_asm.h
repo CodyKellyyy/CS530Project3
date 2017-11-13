@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 
 #include "file_parser.h"
 #include "file_parse_exception.h"
@@ -21,15 +22,18 @@
 #include "symtab.h"
 #include "symtab_exception.h"
 
+using namespace std;
+
 class sicxe_asm {
 
 public:
-    sicxe_asm();
+    sicxe_asm(string);
     string to_upper_string(string);
-    void parse_rows(file_parser, string);
+    string to_string(int);
+    void parse_rows();
     int format_address(string);
     bool is_assm_dir(string);
-    symtab symtab;
+    symtab symtable;
 
 
 
@@ -37,20 +41,15 @@ private:
 
     /* ---- Members ---- */
     // All values to be put into list file
-
-
     int line_number;
     int starting_address;
     int LOC_CTR;
     int size;
-    string to_string(int);
+    file_parser *parser;
+    opcodetab opcodetable;
 
-
+    string file_name;
     string program_name;
-    string address;
-    string temp_label;
-    string temp_opcode;
-    string temp_operand;
     string token;
     string base;
 
@@ -58,9 +57,7 @@ private:
 
     /* ---- Functions ---- */
     // Writes the Line number, address, label, opcode, and operand to the listing file
-    void write_headers(string);
-    // Adds the symbols in the code to symtab
-    void add_to_symtab(string, string, string);
+    void write_headers();
     //Writes to the listing files
     void write_to_file(int, int, string, string, string);
     // Formats the address depending if it's hex or dec
@@ -70,8 +67,9 @@ private:
     string substring_quotes(string);
 
     /* Vector of Assembler Directives */
-    string assembler_directives[8] = {"START",
+    string assembler_directives[9] = {"START",
                                       "END",
+                                      "EQU",
                                       "BYTE",
                                       "WORD",
                                       "RESB",
