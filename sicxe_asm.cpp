@@ -208,6 +208,7 @@ bool sicxe_asm::is_assm_dir(string code) {
             return found;
         }
     }
+    return found;
 }
 
 string sicxe_asm::to_upper_string(string s) {
