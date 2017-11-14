@@ -19,7 +19,7 @@
 
 int main(int argc, char *argv[]){
 
-    //string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
+    //string filename = "C:\\Users\\britt\\CLionProjects\\Project3\\source4.txt";
     string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
@@ -28,6 +28,7 @@ int main(int argc, char *argv[]){
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
     }
+
 }
 
 sicxe_asm::sicxe_asm(string filename) {
@@ -236,4 +237,10 @@ int sicxe_asm::string_to_int(string i) {
     int n;
     sscanf(i.c_str(), "%d", &n);
     return n;
+}
+
+string sicxe_asm::int_to_hex(int num, int width) {
+    stringstream out;
+    out << setw(width) << setfill('0') << hex << num;
+    return to_upper_string(out.str());
 }

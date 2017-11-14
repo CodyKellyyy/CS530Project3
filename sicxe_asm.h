@@ -63,6 +63,8 @@ private:
     // Formats the address depending if it's hex or dec
     // Changes string to int
     int string_to_int(string);
+    //Converts from int to hex
+    string int_to_hex(int, int);
     //TODO: define the substring_quotes() fxn
     string substring_quotes(string);
 
