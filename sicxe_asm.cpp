@@ -178,15 +178,15 @@ void sicxe_asm::write_headers() {
     fileName.erase((fileName.end()-3),fileName.end());
     fileName.append("lis");
     myfile.open(fileName.c_str());
-    string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
-    string secondLine[] = {"=====","=======","=====","======","======="};
+    string firstLine[] = {"Line#","Address","Label","Opcode","Operand","Machine Code"};
+    string secondLine[] = {"=====","=======","=====","======","=======","============"};
 
     int i = 0;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 6; i++) {
         myfile << setw(10) << std::left << firstLine[i];
     }
     myfile << "\n";
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 6; i++) {
         myfile << setw(10) << std::left << secondLine[i];
     }
     myfile << "\n";
