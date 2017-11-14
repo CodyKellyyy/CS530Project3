@@ -42,7 +42,7 @@ private:
     /* ---- Members ---- */
     // All values to be put into list file
     int line_number;
-    int starting_address;
+    int address = 0;
     int LOC_CTR;
     int size;
     file_parser *parser;
