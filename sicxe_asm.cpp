@@ -62,6 +62,7 @@ void sicxe_asm::parse_rows() {
     string temp_label = parser->get_token(line_number, LABEL);
     string temp_opcode = parser->get_token(line_number, OPCODE);
     string temp_operand = parser->get_token(line_number, OPERANDS);
+    address = LOC_CTR;
     if (line_number == parser->size()) {
         throw symtab_exception("'START' directive not found");
     } else {
@@ -69,7 +70,8 @@ void sicxe_asm::parse_rows() {
         LOC_CTR = format_address(parser->get_token(line_number, OPERANDS));
     }
     line_number++;
-    write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
+    write_to_file(line_number, address, temp_label, temp_opcode, temp_operand);
+    address = LOC_CTR;
 
     while (line_number < parser->size()){
         string temp_label = parser->get_token(line_number, LABEL);
@@ -111,7 +113,8 @@ void sicxe_asm::parse_rows() {
             else if (to_upper_string(temp_opcode) == "RESB")
                 LOC_CTR += format_address(temp_operand);
             line_number++;
-            write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
+            write_to_file(line_number, address, temp_label, temp_opcode, temp_operand);
+            address = LOC_CTR;
 
         } else {
             if (temp_label != "") {
@@ -129,7 +132,8 @@ void sicxe_asm::parse_rows() {
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
                 LOC_CTR = LOC_CTR + size;
                 line_number = line_number + 1;
-                write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
+                write_to_file(line_number, address, temp_label, temp_opcode, temp_operand);
+                address = LOC_CTR;
             }
 
         }
