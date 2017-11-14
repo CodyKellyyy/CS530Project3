@@ -194,7 +194,8 @@ void sicxe_asm::write_headers() {
 
 void sicxe_asm::write_to_file(int line_num, int address, string label, string opcode, string operand){
     myfile << setw(10) << std::left << line_num;
-    myfile << setw(10) << std::left << address;
+    string hexaddr = int_to_hex(address, 5);
+    myfile << setw(10) << std::left << hexaddr;
     myfile << setw(10) << std::left << label;
     myfile << setw(10) << std::left << opcode;
     myfile << setw(10) << std::left << operand;
