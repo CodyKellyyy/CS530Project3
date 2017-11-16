@@ -30,7 +30,7 @@ public:
     sicxe_asm(string);
     string to_upper_string(string);
     string to_string(int);
-    void parse_rows();
+    void pass_one();
     int format_address(string);
     bool is_assm_dir(string);
     symtab symtable;

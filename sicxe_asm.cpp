@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
     string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
-        assembler.parse_rows();
+        assembler.pass_one();
     } catch (exception& e) {
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
@@ -42,7 +42,7 @@ sicxe_asm::sicxe_asm(string filename) {
     }
 }
 
-void sicxe_asm::parse_rows() {
+void sicxe_asm::pass_one() {
     write_headers();//Write headers to the listing file
 
     //This outer loop goes through each row in the file parser
