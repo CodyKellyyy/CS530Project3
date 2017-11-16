@@ -24,6 +24,7 @@ int main(int argc, char *argv[]){
     try {
         sicxe_asm assembler(filename);
         assembler.pass_one();
+        assembler.pass_two();
     } catch (exception& e) {
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
@@ -41,6 +42,10 @@ sicxe_asm::sicxe_asm(string filename) {
         exit(EXIT_FAILURE);
     }
 }
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 void sicxe_asm::pass_one() {
     write_headers();//Write headers to the listing file
@@ -139,6 +144,10 @@ void sicxe_asm::pass_one() {
     }
     myfile.close();
 }
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 1 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 string sicxe_asm::to_string(int i) {
     ostringstream stream;
@@ -244,4 +253,10 @@ string sicxe_asm::int_to_hex(int num, int width) {
     stringstream out;
     out << setw(width) << setfill('0') << hex << num;
     return to_upper_string(out.str());
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void sicxe_asm::pass_two(){
+
 }
