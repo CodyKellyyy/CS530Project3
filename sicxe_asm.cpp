@@ -258,5 +258,7 @@ string sicxe_asm::int_to_hex(int num, int width) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void sicxe_asm::pass_two(){
-
+    string temp_label = parser->get_token(line_number, LABEL);
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+    string temp_operand = parser->get_token(line_number, OPERANDS);
 }
