@@ -36,9 +36,10 @@ public:
     bool is_assm_dir(string);
     string opcode_binary(string);
     string nixbpe(string);
+    string format_headername(string);
     string get_displacement(string, string, string);
     symtab symtable;
-
+    opcodetab optab;
 
 
 private:
@@ -50,7 +51,6 @@ private:
     int LOC_CTR;
     int size;
     file_parser *parser;
-    opcodetab opcodetable;
 
     string file_name;
     string program_name;

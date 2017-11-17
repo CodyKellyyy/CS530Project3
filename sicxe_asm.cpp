@@ -19,8 +19,8 @@
 
 int main(int argc, char *argv[]){
 
-    //string filename = "C:\\Users\\britt\\CLionProjects\\Project3\\source4.txt";
-    string filename = argv[1];
+    string filename = "/Users/codykelly/CLionProjects/CS530Project3/source1.txt";
+    //string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
         assembler.pass_one();
@@ -255,29 +255,71 @@ string sicxe_asm::int_to_hex(int num, int width) {
     return to_upper_string(out.str());
 }
 
+string sicxe_asm::format_headername(string name) {
+    stringstream out;
+    out<< setw(6) << setfill(' ') << name;
+    return out.str();
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void sicxe_asm::pass_two(){
     line_number = 0;
     string machine_code = "";
+    string header_record = "";
+
+    //interate until start is found. Maybe make into method?
+    while (to_upper_string(parser->get_token(line_number, OPCODE)) != "START" && line_number < parser->size()) {
+        string temp_label = parser->get_token(line_number, LABEL);
+        string temp_opcode = parser->get_token(line_number, OPCODE);
+        string temp_operand = parser->get_token(line_number, OPERANDS);
+
+        if (temp_label != "" || temp_opcode != "" || temp_operand != "")
+            throw symtab_exception("Invalid syntax before 'START' opcode on line " + line_number);
+        line_number++;
+
+    }
+    //linenumber now at start
+    //creates correct header record for program
     string temp_label = parser->get_token(line_number, LABEL);
     string temp_opcode = parser->get_token(line_number, OPCODE);
     string temp_operand = parser->get_token(line_number, OPERANDS);
+    int start_addrress = format_address(temp_operand);
+    string start_add_hex = int_to_hex(start_addrress,6);
+    int end_address = LOC_CTR;
+    string end_add_hex = int_to_hex(end_address,6);
+    string prog_name = format_headername(temp_label);
+    header_record = "H"+prog_name +start_add_hex + end_add_hex;
+    std::cout<< "Header record is " << header_record << endl;
 
     //while loop to get each part of machine code (by line) so we can add that line together
     while (line_number < parser->size()) {
-        string opcode_bits = opcode_binary(temp_opcode);  //will get first 6 bits in binary (before nixbpe)
+        string temp_label = parser->get_token(line_number, LABEL);
+        string temp_opcode = parser->get_token(line_number, OPCODE);
+        string temp_operand = parser->get_token(line_number, OPERANDS);
+
+
+
+
+
+        //We need to generate opcode table and serch to see if opcode exists
+        //if(optab.opcode_exists(temp_opcode)== false)
+        //    throw opcode_error_exception("opcode not found");
+        //cout <<"opcode found " << temp_opcode << endl;
+
+        //string opcode_bits = opcode_binary(temp_opcode);  will get first 6 bits in binary (before nixbpe)
         //string nixbpe = get_nixpbe(temp_operand);
         //string displacement = get_displacement(address, nixbpe, temp_operand); //address: need to get address into pass 2 --- nixbpe: if last digit is 1, it is format 4
         //machine_code = opcode_bits + nixbpe + displacement;
         //write machine_code to file
         line_number++;
     }
+
 }
 
 string sicxe_asm::opcode_binary(string opcode){
         string binary;
-        string opcode_hex = opcodetable.get_machine_code(opcode);
+        string opcode_hex = optab.get_machine_code(opcode);
         binary = hex_to_bin(opcode_hex);
         binary = binary.substr(0,binary.size()-2);
 }
