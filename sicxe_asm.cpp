@@ -245,12 +245,6 @@ string sicxe_asm::substring_quotes(string operand) {
     }
 }
 
-string sicxe_asm::to_string(int n) {
-    ostringstream stream;
-    stream << n;
-    return stream.str();
-}
-
 int sicxe_asm::string_to_int(string i) {
     int n;
     sscanf(i.c_str(), "%d", &n);
