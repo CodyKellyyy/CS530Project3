@@ -34,6 +34,9 @@ public:
     void pass_two();
     int format_address(string);
     bool is_assm_dir(string);
+    string opcode_binary(string);
+    string nixbpe(string);
+    string get_displacement(string, string, string);
     symtab symtable;
 
 
