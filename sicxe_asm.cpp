@@ -25,7 +25,8 @@ int main(int argc, char *argv[]){
     string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
-        assembler.parse_rows();
+        assembler.pass_one();
+        assembler.pass_two();
     } catch (exception& e) {
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
@@ -44,7 +45,11 @@ sicxe_asm::sicxe_asm(string filename) {
     }
 }
 
-void sicxe_asm::parse_rows() {
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+void sicxe_asm::pass_one() {
     write_headers();//Write headers to the listing file
 
     //This outer loop goes through each row in the file parser
@@ -142,6 +147,10 @@ void sicxe_asm::parse_rows() {
     myfile.close();
 }
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 1 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 string sicxe_asm::to_string(int i) {
     ostringstream stream;
     stream << i;
@@ -180,15 +189,15 @@ void sicxe_asm::write_headers() {
     fileName.erase((fileName.end()-3),fileName.end());
     fileName.append("lis");
     myfile.open(fileName.c_str());
-    string firstLine[] = {"Line#","Address","Label","Opcode","Operand"};
-    string secondLine[] = {"=====","=======","=====","======","======="};
+    string firstLine[] = {"Line#","Address","Label","Opcode","Operand","Machine Code"};
+    string secondLine[] = {"=====","=======","=====","======","=======","============"};
 
     int i = 0;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 6; i++) {
         myfile << setw(10) << std::left << firstLine[i];
     }
     myfile << "\n";
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 6; i++) {
         myfile << setw(10) << std::left << secondLine[i];
     }
     myfile << "\n";
@@ -196,7 +205,8 @@ void sicxe_asm::write_headers() {
 
 void sicxe_asm::write_to_file(int line_num, int address, string label, string opcode, string operand){
     myfile << setw(10) << std::left << line_num;
-    myfile << setw(10) << std::left << address;
+    string hexaddr = int_to_hex(address, 5);
+    myfile << setw(10) << std::left << hexaddr;
     myfile << setw(10) << std::left << label;
     myfile << setw(10) << std::left << opcode;
     myfile << setw(10) << std::left << operand;
@@ -251,4 +261,12 @@ string sicxe_asm::int_to_hex(int num, int width) {
     stringstream out;
     out << setw(width) << setfill('0') << hex << num;
     return to_upper_string(out.str());
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void sicxe_asm::pass_two(){
+    string temp_label = parser->get_token(line_number, LABEL);
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+    string temp_operand = parser->get_token(line_number, OPERANDS);
 }
