@@ -66,6 +66,8 @@ private:
     int string_to_int(string);
     //Converts from int to hex
     string int_to_hex(int, int);
+    //gets binary form of hex number
+    string hex_to_bin(string);
     //TODO: define the substring_quotes() fxn
     string substring_quotes(string);
 
