@@ -259,18 +259,45 @@ string sicxe_asm::int_to_hex(int num, int width) {
 
 void sicxe_asm::pass_two(){
     line_number = 0;
+    string machine_code = "";
     string temp_label = parser->get_token(line_number, LABEL);
     string temp_opcode = parser->get_token(line_number, OPCODE);
     string temp_operand = parser->get_token(line_number, OPERANDS);
 
-    //Get binary value of hex number
-    string binary;
+    //while loop to get each part of machine code (by line) so we can add that line together
     while (line_number < parser->size()) {
-        string opcode_hex = opcodetable.get_machine_code(temp_opcode);
-        binary = hex_to_bin(opcode_hex);
+        string opcode_bits = opcode_binary(temp_opcode);  //will get first 6 bits in binary (before nixbpe)
+        //string nixbpe = get_nixpbe(temp_operand);
+        //string displacement = get_displacement(address, nixbpe, temp_operand); //address: need to get address into pass 2 --- nixbpe: if last digit is 1, it is format 4
+        //machine_code = opcode_bits + nixbpe + displacement;
+        //write machine_code to file
         line_number++;
     }
 }
+
+string sicxe_asm::opcode_binary(string opcode){
+        string binary;
+        string opcode_hex = opcodetable.get_machine_code(opcode);
+        binary = hex_to_bin(opcode_hex);
+        binary = binary.substr(0,binary.size()-2);
+}
+
+string sicxe_asm::nixbpe(string operand) {
+    string N = "0";
+    string I = "0";
+    string X = "0";
+    string B = "0";
+    string P = "0";
+    string E = "0";
+}
+
+string sicxe_asm::get_displacement(string address, string nixbpe, string operand) {
+
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 string sicxe_asm::hex_to_bin(string hex) {
     hex = to_upper_string(hex);
