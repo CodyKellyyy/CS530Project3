@@ -266,7 +266,45 @@ string sicxe_asm::int_to_hex(int num, int width) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void sicxe_asm::pass_two(){
+    line_number = 0;
     string temp_label = parser->get_token(line_number, LABEL);
     string temp_opcode = parser->get_token(line_number, OPCODE);
     string temp_operand = parser->get_token(line_number, OPERANDS);
+
+    //Get binary value of hex number
+    string binary;
+    while (line_number < parser->size()) {
+        string opcode_hex = opcodetable.get_machine_code(temp_opcode);
+        binary = hex_to_bin(opcode_hex);
+        line_number++;
+    }
+}
+
+string sicxe_asm::hex_to_bin(string hex) {
+    hex = to_upper_string(hex);
+    string final_binary = "";
+    string get_binary = "";
+    int i = 0;
+    while(i < hex.size()){
+        char hexval = hex.at(i);
+        if(hexval == '0') get_binary = "0000";
+        else if(hexval == '1') get_binary = "0001";
+        else if(hexval == '2') get_binary = "0010";
+        else if(hexval == '3') get_binary = "0011";
+        else if(hexval == '4') get_binary = "0100";
+        else if(hexval == '5') get_binary = "0101";
+        else if(hexval == '6') get_binary = "0110";
+        else if(hexval == '7') get_binary = "0111";
+        else if(hexval == '8') get_binary = "1000";
+        else if(hexval == '9') get_binary = "1001";
+        else if(hexval == 'A') get_binary = "1010";
+        else if(hexval == 'B') get_binary = "1011";
+        else if(hexval == 'C') get_binary = "1100";
+        else if(hexval == 'D') get_binary = "1101";
+        else if(hexval == 'E') get_binary = "1110";
+        else if(hexval == 'F') get_binary = "1111";
+        final_binary = final_binary + get_binary;
+        i++;
+    }
+    return final_binary;
 }
