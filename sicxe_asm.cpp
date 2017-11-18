@@ -19,12 +19,13 @@
 
 int main(int argc, char *argv[]){
 
-    string filename = "/Users/edwin.coronado/CLionProjects/Project3/source3.txt";
-    //string filename = argv[1];
+    //string filename = "/Users/edwin.coronado/CLionProjects/Project3/source3.txt";
+    string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
         assembler.pass_one();
         assembler.pass_two();
+        cout << "EDWIN: " << assembler.get_reg_number("PC") << endl;
     } catch (exception& e) {
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
@@ -41,6 +42,7 @@ sicxe_asm::sicxe_asm(string filename) {
         cerr << e.getMessage() << endl;
         exit(EXIT_FAILURE);
     }
+    load_registers();
 }
 
 
@@ -265,8 +267,6 @@ string sicxe_asm::format_headername(string name) {
 
 void sicxe_asm::pass_two(){
     line_number = 0;
-    string machine_code = "";
-    string header_record = "";
 
     //iterate until start is found. Maybe make into method?
     while (to_upper_string(parser->get_token(line_number, OPCODE)) != "START" && line_number < parser->size()) {
@@ -286,12 +286,35 @@ void sicxe_asm::pass_two(){
         string temp_opcode = parser->get_token(line_number, OPCODE);
         string temp_operand = parser->get_token(line_number, OPERANDS);
 
-        //We need to generate opcode table and serch to see if opcode exists
-        int instruction_size = optab.get_instruction_size(temp_opcode);
-        int opcode = hex_string_to_int(optab.get_machine_code(temp_opcode));
+        //This u_int will be bitwise manipulated to produce the machine code
+        unsigned int machine_code = 0;
 
-        cout << "Instruction size for: " << temp_opcode << " is " << instruction_size << endl;
-        cout << "Opcode for: " << temp_opcode << " is " << opcode << endl;
+
+
+        if (temp_opcode == "WORD" || temp_opcode == "BYTE") {
+            switch (tolower(temp_operand[0])) {
+                case 120: { // 120 is decimal ASCII for 'x'
+
+                    break;
+                }
+                case 99: { // 99 is decimal ASCII for 'c'
+
+                    break;
+                }
+                default: {
+
+                    break;
+                }
+            }
+
+        } else {
+            //We need to generate opcode table and serch to see if opcode exists
+            unsigned instruction_size = optab.get_instruction_size(temp_opcode);
+            unsigned opcode = hex_string_to_int(optab.get_machine_code(temp_opcode));
+
+            cout << "Instruction size for: " << temp_opcode << " is " << instruction_size << endl;
+            cout << "Opcode for: " << temp_opcode << " is " << opcode << endl;
+
 
 //        switch (instruction_size) {
 //            case 1 : {
@@ -307,6 +330,12 @@ void sicxe_asm::pass_two(){
 //
 //            }
 //        }
+        }
+
+
+
+
+
 
 
 
@@ -378,4 +407,38 @@ int sicxe_asm::hex_string_to_int(string s) {
     unsigned int value;
     converter >> std::hex >> value;
     return value;
+}
+
+/* This function does a bitwise manipulation to remove
+ * the last two bits of the opcode */
+unsigned int sicxe_asm::opcode_to_6_bit(unsigned int op) {
+    unsigned int mask = 0xFC000000;
+    return op & mask;
+}
+
+void sicxe_asm::load_registers() {
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("A", pair<int, int>(0, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("X", pair<int, int>(1, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("L", pair<int, int>(2, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("PC", pair<int, int>(8, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("SW", pair<int, int>(9, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("B", pair<int, int>(3, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("S", pair<int, int>(4, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("T", pair<int, int>(5, 0)));
+    registers.insert(pair<string, pair<unsigned int, unsigned int> >("F", pair<int, int>(6, 0)));
+}
+
+// Sets the register's value
+void sicxe_asm::set_reg_value(string reg, unsigned int val) {
+    registers[reg].second = val;
+}
+
+// Gets the register's number.
+int sicxe_asm::get_reg_number(string reg) {
+    return registers[reg].first;
+}
+
+// Gets the register's value.
+int sicxe_asm::get_reg_value(string reg) {
+    return registers[reg].second;
 }

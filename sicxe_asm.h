@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <map>
 
 #include "file_parser.h"
 #include "file_parse_exception.h"
@@ -34,6 +35,7 @@ public:
     void pass_two();
     int format_address(string);
     int hex_string_to_int(string);
+    unsigned int opcode_to_6_bit(unsigned int);
     bool is_assm_dir(string);
     string opcode_binary(string);
     string nixbpe(string);
@@ -41,6 +43,9 @@ public:
     string get_displacement(string, string, string);
     symtab symtable;
     opcodetab optab;
+    void set_reg_value(string, unsigned int);
+    int get_reg_number(string);
+    int get_reg_value(string);
 
 
 private:
@@ -68,6 +73,8 @@ private:
     // Formats the address depending if it's hex or dec
     // Changes string to int
     int string_to_int(string);
+    // Loads the registers to a map
+    void load_registers();
     //Converts from int to hex
     string int_to_hex(int, int);
     //gets binary form of hex number
@@ -93,6 +100,12 @@ private:
         OPERANDS = 2,
         COMMENTS = 3
     };
+
+    /* This map will hold the register name as key, and a pair
+     * of unsigned ints where the 'first' is the register number
+     * and 'second' is the current value */
+    map<string, pair<unsigned int, unsigned int> > registers;
+
 
 
 };
