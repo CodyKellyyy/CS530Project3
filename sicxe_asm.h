@@ -34,7 +34,7 @@ public:
     string to_string(int);
     void pass_one();
     void pass_two();
-    int format_address(string);
+    unsigned int format_address(string);
     int hex_string_to_int(string);
     unsigned int opcode_to_6_bit(unsigned int);
     bool is_assm_dir(string);
@@ -51,7 +51,10 @@ public:
     unsigned int get_flag(char);
     unsigned int flags_to_int();
 
-    //TODO: make this a struct to avoid "undeclared identifier" issues.
+    /* We never really saved the line num, address, label, opcode, etc.. in
+     * pass one. This object will help us save that. I added a vector<pass_one_record>
+     * and add to it every time we call "write_to_file()" in pass one. So as we
+     * print to the file, we also save the data so that it makes pass 2 easier to iterate */
     class pass_one_record {
     public:
         pass_one_record(){};
@@ -63,12 +66,12 @@ public:
             operand = oper;
             machine_code = "";
         }
-        int line;
-        int address;
-        string label;
-        string opcode;
-        string operand;
-        string machine_code;
+        unsigned int line = 0;
+        unsigned int address = 0;
+        string label = "";
+        string opcode = "";
+        string operand = "";
+        string machine_code = "";
     };
 
 private:
@@ -95,7 +98,7 @@ private:
     void write_to_file(int, int, string, string, string);
     // Formats the address depending if it's hex or dec
     // Changes string to int
-    int string_to_int(string);
+    unsigned int string_to_int(string);
     // Loads the registers to a map
     void load_registers();
     // Loads the flags to a map
