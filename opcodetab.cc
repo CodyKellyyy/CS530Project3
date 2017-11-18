@@ -33,7 +33,6 @@ string opcodetab::get_machine_code(string code) {
         cerr << e.getMessage() << endl;
         return "";
     }
-
 }
 
 int opcodetab::get_instruction_size(string code) {
