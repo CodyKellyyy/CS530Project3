@@ -268,7 +268,7 @@ void sicxe_asm::pass_two(){
     string machine_code = "";
     string header_record = "";
 
-    //interate until start is found. Maybe make into method?
+    //iterate until start is found. Maybe make into method?
     while (to_upper_string(parser->get_token(line_number, OPCODE)) != "START" && line_number < parser->size()) {
         string temp_label = parser->get_token(line_number, LABEL);
         string temp_opcode = parser->get_token(line_number, OPCODE);
@@ -277,26 +277,36 @@ void sicxe_asm::pass_two(){
         if (temp_label != "" || temp_opcode != "" || temp_operand != "")
             throw symtab_exception("Invalid syntax before 'START' opcode on line " + line_number);
         line_number++;
-
     }
 
     //while loop to get each part of machine code (by line) so we can add that line together
+    line_number++;
     while (line_number < parser->size()) {
         string temp_label = parser->get_token(line_number, LABEL);
         string temp_opcode = parser->get_token(line_number, OPCODE);
         string temp_operand = parser->get_token(line_number, OPERANDS);
 
         //We need to generate opcode table and serch to see if opcode exists
-        try {
-            if(!optab.opcode_exists(temp_opcode))
-                throw opcode_error_exception("Opcode not found");
-            cout <<"opcode found " << temp_opcode << endl;
-        } catch (opcode_error_exception& e) {
-            cerr << e.getMessage() << endl;
-            exit(EXIT_FAILURE);
-        }
+        int instruction_size = optab.get_instruction_size(temp_opcode);
+        int opcode = hex_string_to_int(optab.get_machine_code(temp_opcode));
 
+        cout << "Instruction size for: " << temp_opcode << " is " << instruction_size << endl;
+        cout << "Opcode for: " << temp_opcode << " is " << opcode << endl;
 
+//        switch (instruction_size) {
+//            case 1 : {
+//
+//            }
+//            case 2 : {
+//
+//            }
+//            case 3 : {
+//
+//            }
+//            case 4 : {
+//
+//            }
+//        }
 
 
 
@@ -361,4 +371,11 @@ string sicxe_asm::hex_to_bin(string hex) {
         i++;
     }
     return final_binary;
+}
+
+int sicxe_asm::hex_string_to_int(string s) {
+    std::istringstream converter(s);
+    unsigned int value;
+    converter >> std::hex >> value;
+    return value;
 }

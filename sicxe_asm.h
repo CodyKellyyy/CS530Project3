@@ -33,6 +33,7 @@ public:
     void pass_one();
     void pass_two();
     int format_address(string);
+    int hex_string_to_int(string);
     bool is_assm_dir(string);
     string opcode_binary(string);
     string nixbpe(string);
