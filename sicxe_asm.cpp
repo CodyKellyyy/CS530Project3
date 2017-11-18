@@ -268,6 +268,21 @@ string sicxe_asm::format_headername(string name) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void sicxe_asm::pass_two(){
+
+    for (unsigned int i = 0; i < pass_one_tab.size(); i++) {
+        cout << "Line: " << pass_one_tab.at(i).line << " "
+             << "Address: " << pass_one_tab.at(i).address << " "
+             << "Label: " << pass_one_tab.at(i).label << " "
+             << "Opcode: " << pass_one_tab.at(i).opcode << " "
+             << "Operand: " << pass_one_tab.at(i).operand << " "
+             << "Machine code: " << pass_one_tab.at(i).machine_code << endl;
+    }
+
+
+
+
+
+
     line_number = 0;
 
     //iterate until start is found. Maybe make into method?
@@ -419,6 +434,8 @@ unsigned int sicxe_asm::opcode_to_6_bit(unsigned int op) {
     return op & mask;
 }
 
+
+// NOTE: DON'T modify the "registers" map directly. Use the functions below.
 void sicxe_asm::load_registers() {
     registers.insert(pair<string, pair<unsigned int, unsigned int> >("A", pair<int, int>(0, 0)));
     registers.insert(pair<string, pair<unsigned int, unsigned int> >("X", pair<int, int>(1, 0)));
@@ -431,7 +448,7 @@ void sicxe_asm::load_registers() {
     registers.insert(pair<string, pair<unsigned int, unsigned int> >("F", pair<int, int>(6, 0)));
 }
 
-// Sets the register's value
+// Sets the register's value. i.e.: set_reg_value("PC", 1232);
 void sicxe_asm::set_reg_value(string reg, unsigned int val) {
     registers[reg].second = val;
 }
@@ -446,6 +463,7 @@ int sicxe_asm::get_reg_value(string reg) {
     return registers[reg].second;
 }
 
+// NOTE: DON'T modify the "flags" map directly. Use the functions below.
 void sicxe_asm::load_flags() {
     flags.insert(pair<char, unsigned int> ('n', 1));
     flags.insert(pair<char, unsigned int> ('i', 0));
@@ -455,10 +473,12 @@ void sicxe_asm::load_flags() {
     flags.insert(pair<char, unsigned int> ('e', 0));
 }
 
+// Use this method to set a flag, i.e: set_flag('n', 1);
 void sicxe_asm::set_flag(char flag, unsigned int value) {
     flags[flag] = value;
 }
 
+// Use this method to get the value of the flag. i.e.: get_flag('n');
 unsigned int sicxe_asm::get_flag(char flag) {
     return flags[flag];
 }
