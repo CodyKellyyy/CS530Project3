@@ -19,7 +19,7 @@
 
 int main(int argc, char *argv[]){
 
-    string filename = "/Users/codykelly/CLionProjects/CS530Project3/source1.txt";
+    string filename = "/Users/edwin.coronado/CLionProjects/Project3/source3.txt";
     //string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
@@ -279,28 +279,12 @@ void sicxe_asm::pass_two(){
         line_number++;
 
     }
-    //linenumber now at start
-    //creates correct header record for program
-    string temp_label = parser->get_token(line_number, LABEL);
-    string temp_opcode = parser->get_token(line_number, OPCODE);
-    string temp_operand = parser->get_token(line_number, OPERANDS);
-    int start_addrress = format_address(temp_operand);
-    string start_add_hex = int_to_hex(start_addrress,6);
-    int end_address = LOC_CTR;
-    string end_add_hex = int_to_hex(end_address,6);
-    string prog_name = format_headername(temp_label);
-    header_record = "H"+prog_name +start_add_hex + end_add_hex;
-    std::cout<< "Header record is " << header_record << endl;
 
     //while loop to get each part of machine code (by line) so we can add that line together
     while (line_number < parser->size()) {
         string temp_label = parser->get_token(line_number, LABEL);
         string temp_opcode = parser->get_token(line_number, OPCODE);
         string temp_operand = parser->get_token(line_number, OPERANDS);
-
-
-
-
 
         //We need to generate opcode table and serch to see if opcode exists
         try {

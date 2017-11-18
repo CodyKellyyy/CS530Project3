@@ -1,0 +1,1 @@
+scp Makefile file_parser.h file_parser.cc file_parse_exception.h opcode_error_exception.h opcodetab.h opcodetab.cc sicxe_asm.cpp sicxe_asm.h source1.txt source2.txt source3.txt source4.txt symtab.cc symtab.h symtab_exception.h cssc1042@edoras.sdsu.edu:/home/cs/riggins/cssc1042/handin/prog4
