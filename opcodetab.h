@@ -29,6 +29,7 @@ public:
     // throws an opcode_error_exception if the opcode is not
     // found in the table.
     int get_instruction_size(string);
+    bool opcode_exists(string);
 
 private:
     string codes[60] = {"ADD","ADDF","ADDR","AND","CLEAR","COMP","COMPF","COMPR","DIV","DIVF","DIVR","FIX","FLOAT","HIO","J","JEQ","JGT","JLT","JSUB,","LDA","LDB","LDCH","LDF","LDL","LDS","LDT","LDX","LPS","MUL","MULF","MULR","NORM","OR","RD","RMO","RSUB","SHIFTL","SHIFTR","SIO","SSK","STA","STB","STCH","STF","STI","STL","STS","STSW","STT","STX","SUB","SUBF","SUBR","SVC","TD","TIO","TIX","TIXR","WD"};
@@ -39,8 +40,6 @@ private:
     map<string,pair<int,int> >::iterator m_iter;
 
     void print_map();
-    bool opcode_exists(string);
-
 
     int has_plus;
     int get_codes_size();

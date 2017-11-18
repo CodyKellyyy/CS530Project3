@@ -131,7 +131,7 @@ void sicxe_asm::pass_one() {
                 line_number++;
                 write_to_file(line_number, LOC_CTR, temp_label, temp_opcode, temp_operand);
             } else {
-                size = opcodetable.get_instruction_size(temp_opcode);
+                size = optab.get_instruction_size(temp_opcode);
                 if (size == 0)
                     throw symtab_exception("Size of Opcode " + temp_opcode + " on line number " + to_string(line_number) + " not found");
                 LOC_CTR = LOC_CTR + size;
@@ -303,9 +303,18 @@ void sicxe_asm::pass_two(){
 
 
         //We need to generate opcode table and serch to see if opcode exists
-        //if(optab.opcode_exists(temp_opcode)== false)
-        //    throw opcode_error_exception("opcode not found");
-        //cout <<"opcode found " << temp_opcode << endl;
+        try {
+            if(!optab.opcode_exists(temp_opcode))
+                throw opcode_error_exception("Opcode not found");
+            cout <<"opcode found " << temp_opcode << endl;
+        } catch (opcode_error_exception& e) {
+            cerr << e.getMessage() << endl;
+            exit(EXIT_FAILURE);
+        }
+
+
+
+
 
         //string opcode_bits = opcode_binary(temp_opcode);  will get first 6 bits in binary (before nixbpe)
         //string nixbpe = get_nixpbe(temp_operand);
