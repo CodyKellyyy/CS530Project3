@@ -46,7 +46,9 @@ public:
     void set_reg_value(string, unsigned int);
     int get_reg_number(string);
     int get_reg_value(string);
-
+    void set_flag(char, unsigned int);
+    unsigned int get_flag(char);
+    unsigned int flags_to_int();
 
 private:
 
@@ -75,6 +77,8 @@ private:
     int string_to_int(string);
     // Loads the registers to a map
     void load_registers();
+    // Loads the flags to a map
+    void load_flags();
     //Converts from int to hex
     string int_to_hex(int, int);
     //gets binary form of hex number
@@ -105,6 +109,9 @@ private:
      * of unsigned ints where the 'first' is the register number
      * and 'second' is the current value */
     map<string, pair<unsigned int, unsigned int> > registers;
+    /* This map will hold the flag char (i.e.: 'n') and its
+     * current value */
+    map<char, unsigned int> flags;
 
 
 

@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
         sicxe_asm assembler(filename);
         assembler.pass_one();
         assembler.pass_two();
-        cout << "EDWIN: " << assembler.get_reg_number("PC") << endl;
+        cout << "EDWIN the flags are: " << assembler.flags_to_int() << endl;
     } catch (exception& e) {
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
@@ -43,6 +43,7 @@ sicxe_asm::sicxe_asm(string filename) {
         exit(EXIT_FAILURE);
     }
     load_registers();
+    load_flags();
 }
 
 
@@ -442,3 +443,36 @@ int sicxe_asm::get_reg_number(string reg) {
 int sicxe_asm::get_reg_value(string reg) {
     return registers[reg].second;
 }
+
+void sicxe_asm::load_flags() {
+    flags.insert(pair<char, unsigned int> ('n', 1));
+    flags.insert(pair<char, unsigned int> ('i', 0));
+    flags.insert(pair<char, unsigned int> ('x', 1));
+    flags.insert(pair<char, unsigned int> ('b', 0));
+    flags.insert(pair<char, unsigned int> ('p', 1));
+    flags.insert(pair<char, unsigned int> ('e', 0));
+}
+
+void sicxe_asm::set_flag(char flag, unsigned int value) {
+    flags[flag] = value;
+}
+
+unsigned int sicxe_asm::get_flag(char flag) {
+    return flags[flag];
+}
+
+/* This function turns the "flags" map into
+ * an unsigned int with the following form:
+ * 000000nixbpe00000000000000000000 */
+unsigned int sicxe_asm::flags_to_int() {
+    unsigned int answer = 0;
+    answer |= (get_flag('n') << 25);
+    answer |= (get_flag('i') << 24);
+    answer |= (get_flag('x') << 23);
+    answer |= (get_flag('b') << 22);
+    answer |= (get_flag('p') << 21);
+    answer |= (get_flag('e') << 20);
+    return answer;
+}
+
+
