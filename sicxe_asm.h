@@ -112,6 +112,29 @@ private:
     /* This map will hold the flag char (i.e.: 'n') and its
      * current value */
     map<char, unsigned int> flags;
+    /* This is a vector of "pass_one_record" objects that
+     * will help us parse everything and make iteration
+     * easier */
+    vector<pass_one_record> pass_one_tab;
+
+
+    class pass_one_record {
+    public:
+        pass_one_record(int line_num, int addr, string lab, string opc, string oper) {
+            line = line_num;
+            address = addr;
+            label = lab;
+            opcode = opc;
+            operand = oper;
+            machine_code = "";
+        }
+        int line;
+        int address;
+        string label;
+        string opcode;
+        string operand;
+        string machine_code;
+    };
 
 
 

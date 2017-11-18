@@ -212,9 +212,10 @@ void sicxe_asm::write_to_file(int line_num, int address, string label, string op
     myfile << setw(10) << std::left << opcode;
     myfile << setw(10) << std::left << operand;
     myfile << "\n";
+
+    pass_one_record temp_rec(line_num, address, label, opcode, operand);
+    pass_one_tab.push_back(temp_rec);
 }
-
-
 
 bool sicxe_asm::is_assm_dir(string code) {
     bool found = false;
@@ -283,12 +284,13 @@ void sicxe_asm::pass_two(){
     //while loop to get each part of machine code (by line) so we can add that line together
     line_number++;
     while (line_number < parser->size()) {
-        string temp_label = parser->get_token(line_number, LABEL);
-        string temp_opcode = parser->get_token(line_number, OPCODE);
+        string temp_label   = parser->get_token(line_number, LABEL);
+        string temp_opcode  = parser->get_token(line_number, OPCODE);
         string temp_operand = parser->get_token(line_number, OPERANDS);
 
         //This u_int will be bitwise manipulated to produce the machine code
         unsigned int machine_code = 0;
+
 
 
 
