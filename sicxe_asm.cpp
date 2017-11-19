@@ -318,11 +318,11 @@ void sicxe_asm::pass_two(){
                 string quoted_string = substring_quotes(temp_operand);
                 switch (tolower(temp_operand[0])) {
                     case 120: { // 120 is decimal ASCII for 'x'
-                        pass_one_tab.at(i).machine_code = hex_string_to_int(quoted_string);
+                        pass_one_tab.at(i).machine_code = hex_string_to_long(quoted_string);
                         break;
                     }
                     case 99: { // 99 is decimal ASCII for 'c'
-                        pass_one_tab.at(i).machine_code = hex_string_to_int(string_to_hex_string(quoted_string));
+                        pass_one_tab.at(i).machine_code = hex_string_to_long(string_to_hex_string(quoted_string));
                         break;
                     }
                     default: {
@@ -388,7 +388,7 @@ string sicxe_asm::hex_to_bin(string hex) {
     return final_binary;
 }
 
-unsigned long sicxe_asm::hex_string_to_int(string s) {
+unsigned long sicxe_asm::hex_string_to_long(string s) {
     std::istringstream converter(s);
     unsigned int value;
     converter >> std::hex >> value;
