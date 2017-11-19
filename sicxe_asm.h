@@ -35,7 +35,7 @@ public:
     void pass_one();
     void pass_two();
     unsigned int format_address(string);
-    int hex_string_to_int(string);
+    unsigned int hex_string_to_int(string);
     unsigned int opcode_to_6_bit(unsigned int);
     bool is_assm_dir(string);
     string opcode_binary(string);
