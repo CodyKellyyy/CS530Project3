@@ -322,8 +322,7 @@ void sicxe_asm::pass_two(){
                         break;
                     }
                     case 99: { // 99 is decimal ASCII for 'c'
-                        //TODO: need to figure out how to represent the chars as ints
-                        pass_one_tab.at(i).machine_code = int('a');
+                        pass_one_tab.at(i).machine_code = hex_string_to_int(string_to_hex_string(quoted_string));
                         break;
                     }
                     default: {
@@ -466,4 +465,13 @@ unsigned int sicxe_asm::flags_to_int() {
     return answer;
 }
 
+
+
+string sicxe_asm::string_to_hex_string(string s) {
+    std::stringstream temp;
+    for (int i=0; i<s.size(); i++) {
+        temp << hex << setw(2) << setfill('0') << int(s[i]);
+    }
+    return temp.str();
+}
 

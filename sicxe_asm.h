@@ -107,6 +107,8 @@ private:
     string int_to_hex(int, int);
     //gets binary form of hex number
     string hex_to_bin(string);
+    //Converts a normal string i.e.: "edwin" and returns is hex ascii equivalent: "656477696e"
+    string string_to_hex_string(string);
     //TODO: define the substring_quotes() fxn
     string substring_quotes(string);
 
