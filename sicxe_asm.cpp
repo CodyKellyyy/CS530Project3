@@ -21,7 +21,7 @@
 
 int main(int argc, char *argv[]){
 
-    string filename = "/Users/edwin.coronado/CLionProjects/Project3/source4.txt";
+    string filename = "C:\\Users\\Samuel (Yomi)\\CLionProjects\\CS530Project3\\source1.txt";
     //string filename = argv[1];
     try {
         sicxe_asm assembler(filename);
@@ -346,10 +346,26 @@ string sicxe_asm::nixbpe(string operand) {
     string E = "0";
 }
 
-string sicxe_asm::get_displacement(string address, string nixbpe, string operand) {
+//Gets the displacement for addresses
+int sicxe_asm::get_displacement(int firstaddr, int secondaddr) {
+    int disp_base = firstaddr - baseAddr;
+    int disp = firstaddr - secondaddr;
 
+    if(disp >= -2048 && disp <= 2047){
+        set_flag('p', 1);
+        return disp;
+    }
+    else if(disp_base >= 0 && disp_base <= 4095){
+        set_flag('b', 1);
+        return disp_base;
+    }
+
+    return 0;
 }
 
+//string sicxe_asm::get_displacement(string address, string nixbpe, string operand) {
+//
+//}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
