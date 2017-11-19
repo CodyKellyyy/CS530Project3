@@ -388,7 +388,7 @@ string sicxe_asm::hex_to_bin(string hex) {
     return final_binary;
 }
 
-unsigned int sicxe_asm::hex_string_to_int(string s) {
+unsigned long sicxe_asm::hex_string_to_int(string s) {
     std::istringstream converter(s);
     unsigned int value;
     converter >> std::hex >> value;
