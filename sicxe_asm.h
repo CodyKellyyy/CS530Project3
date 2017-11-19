@@ -41,7 +41,9 @@ public:
     string opcode_binary(string);
     string nixbpe(string);
     string format_headername(string);
-    string get_displacement(string, string, string);
+    //string get_displacement(string, string, string);
+    int get_displacement(int, int);
+    unsigned int baseAddr;
     symtab symtable;
     opcodetab optab;
     void set_reg_value(string, unsigned int);
@@ -50,6 +52,14 @@ public:
     void set_flag(char, unsigned int);
     unsigned int get_flag(char);
     unsigned int flags_to_int();
+    string objectcode;
+    //Methods to get formats 1-4 object code
+    void format1_objectCode();
+    void format2_objectCode();
+    void format3_objectCode();
+    void format4_objectCode();
+
+    //
 
     /* We never really saved the line num, address, label, opcode, etc.. in
      * pass one. This object will help us save that. I added a vector<pass_one_record>
@@ -109,8 +119,11 @@ private:
     string hex_to_bin(string);
     //Converts a normal string i.e.: "edwin" and returns is hex ascii equivalent: "656477696e"
     string string_to_hex_string(string);
+    int hex_string_to_int(string);
     //TODO: define the substring_quotes() fxn
     string substring_quotes(string);
+
+
 
     /* Vector of Assembler Directives */
     string assembler_directives[9] = {"START",
