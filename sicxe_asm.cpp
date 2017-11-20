@@ -259,11 +259,6 @@ string sicxe_asm::int_to_hex(int num, int width) {
     return to_upper_string(out.str());
 }
 
-string sicxe_asm::format_headername(string name) {
-    stringstream out;
-    out<< setw(6) << setfill(' ') << name;
-    return out.str();
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
