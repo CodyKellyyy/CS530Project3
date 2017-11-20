@@ -393,24 +393,6 @@ void sicxe_asm::pass_two(){
     }
 }
 
-
-//do we need this method? -Cody
-string sicxe_asm::opcode_binary(string opcode){
-    string binary;
-    string opcode_hex = optab.get_machine_code(opcode);
-    binary = hex_to_bin(opcode_hex);
-    binary = binary.substr(0,binary.size()-2);
-}
-
-string sicxe_asm::nixbpe(string operand) {
-    string N = "0";
-    string I = "0";
-    string X = "0";
-    string B = "0";
-    string P = "0";
-    string E = "0";
-}
-
 //Gets the displacement for addresses
 int sicxe_asm::get_displacement(int firstaddr, int secondaddr) {
     int disp_base = firstaddr - baseAddr;
@@ -430,41 +412,9 @@ int sicxe_asm::get_displacement(int firstaddr, int secondaddr) {
     return 0;
 }
 
-//string sicxe_asm::get_displacement(string address, string nixbpe, string operand) {
-//
-//}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-string sicxe_asm::hex_to_bin(string hex) {
-    hex = to_upper_string(hex);
-    string final_binary = "";
-    string get_binary = "";
-    int i = 0;
-    while(i < hex.size()){
-        char hexval = hex.at(i);
-        if(hexval == '0') get_binary = "0000";
-        else if(hexval == '1') get_binary = "0001";
-        else if(hexval == '2') get_binary = "0010";
-        else if(hexval == '3') get_binary = "0011";
-        else if(hexval == '4') get_binary = "0100";
-        else if(hexval == '5') get_binary = "0101";
-        else if(hexval == '6') get_binary = "0110";
-        else if(hexval == '7') get_binary = "0111";
-        else if(hexval == '8') get_binary = "1000";
-        else if(hexval == '9') get_binary = "1001";
-        else if(hexval == 'A') get_binary = "1010";
-        else if(hexval == 'B') get_binary = "1011";
-        else if(hexval == 'C') get_binary = "1100";
-        else if(hexval == 'D') get_binary = "1101";
-        else if(hexval == 'E') get_binary = "1110";
-        else if(hexval == 'F') get_binary = "1111";
-        final_binary = final_binary + get_binary;
-        i++;
-    }
-    return final_binary;
-}
 
 unsigned long sicxe_asm::hex_string_to_long(string s) {
     std::istringstream converter(s);
