@@ -9,9 +9,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
-#include <sstream>
 #include "sicxe_asm.h"
-//#include "file_parser.cc"
 #include "file_parser.h"
 #include "file_parse_exception.h"
 #include "opcodetab.h"
@@ -353,9 +351,11 @@ int sicxe_asm::get_displacement(int firstaddr, int secondaddr) {
 
     if(disp >= -2048 && disp <= 2047){
         set_flag('p', 1);
+        set_flag('b', 0);
         return disp;
     }
     else if(disp_base >= 0 && disp_base <= 4095){
+        set_flag('p', 0);
         set_flag('b', 1);
         return disp_base;
     }
@@ -477,12 +477,88 @@ unsigned int sicxe_asm::flags_to_int() {
 }
 
 
+void sicxe_asm::format1_objectCode() {
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+
+    objectcode = optab.get_machine_code(temp_opcode);
+}
+
+void sicxe_asm::format2_objectCode() {
+    string temp_label = parser->get_token(line_number, LABEL);
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+    string temp_operand = parser->get_token(line_number, OPERANDS);
+}
+
+void sicxe_asm::format3_objectCode() {
+    string temp_label = parser->get_token(line_number, LABEL);
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+    string temp_operand = parser->get_token(line_number, OPERANDS);
+
+    //"+" signifies format 4 instruction
+    if (temp_opcode[0] == '+') {
+        format4_objectCode();
+        return;
+    }
+
+    //If operand is in indirect addressing mode
+    if (temp_operand[0] == '@') {
+        set_flag('n',1);
+        set_flag('i',0);
+        set_flag('x',0);
+    }
+
+    //If operand is in immediate addressing mode
+    if (temp_operand[0] == '#') {
+        set_flag('n',0);
+        set_flag('i',1);
+        set_flag('x',0);
+    }
+
+    //If operand is in indexed addressing mode
+    if(temp_operand.find(',') != string::npos){
+        set_flag('n',1);
+        set_flag('i',1);
+        set_flag('x',1);
+    }
+}
+
+void sicxe_asm::format4_objectCode() {
+    string temp_label = parser->get_token(line_number, LABEL);
+    string temp_opcode = parser->get_token(line_number, OPCODE);
+    string temp_operand = parser->get_token(line_number, OPERANDS);
+
+    set_flag('b',0);
+    set_flag('p',0);
+    set_flag('e',1);
+
+    //If operand is in indexed addressing mode
+    if(temp_operand.find(',') != string::npos){
+        set_flag('n',1);
+        set_flag('i',1);
+        set_flag('x',1);
+    }
+
+    //If operand is in indirect addressing mode
+    if (temp_operand[0] == '@') {
+        set_flag('n',1);
+        set_flag('i',0);
+        set_flag('x',0);
+    }
+
+    //If operand is in immediate addressing mode
+    if (temp_operand[0] == '#') {
+        set_flag('n',0);
+        set_flag('i',1);
+        set_flag('x',0);
+    }
+}
 
 string sicxe_asm::string_to_hex_string(string s) {
     std::stringstream temp;
-    for (int i=0; i<s.size(); i++) {
+    for (int i = 0; i < s.size(); i++) {
         temp << hex << setw(2) << setfill('0') << int(s[i]);
     }
     return temp.str();
 }
+
 
