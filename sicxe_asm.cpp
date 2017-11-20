@@ -393,6 +393,10 @@ void sicxe_asm::pass_two(){
     }
 }
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 //Gets the displacement for addresses
 int sicxe_asm::get_displacement(int firstaddr, int secondaddr) {
     int disp_base = firstaddr - baseAddr;
@@ -411,10 +415,6 @@ int sicxe_asm::get_displacement(int firstaddr, int secondaddr) {
 
     return 0;
 }
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~Pass 2 Helper Functions~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 unsigned long sicxe_asm::hex_string_to_long(string s) {
     std::istringstream converter(s);
