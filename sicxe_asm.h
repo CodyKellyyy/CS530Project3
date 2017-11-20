@@ -38,6 +38,8 @@ public:
     unsigned long hex_string_to_long(string);
     unsigned int opcode_to_6_bit(unsigned int);
     bool is_assm_dir(string);
+    string get_format2_register1(string);
+    string get_format2_register2 (string);
     string opcode_binary(string);
     string nixbpe(string);
     string format_headername(string);

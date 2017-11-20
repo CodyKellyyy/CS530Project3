@@ -325,18 +325,42 @@ void sicxe_asm::pass_two(){
             else {  //this will only serch for instruction size for valid opcodes.
                 switch (optab.get_instruction_size(pass_one_tab.at(i).opcode)) {
 
-                    //write opcode to  machine code.
-                    case 1 : {
-
+                    case 1 : { //write opcode to  machine code. Works!
+                        pass_one_tab.at(i).machine_code = optab.get_machine_code(temp_opcode);
                         break;
                     }
-                        //write opcode + destination and source register, split on comma
-                    case 2 : {
+
+                    case 2 : {//write opcode + destination and source register, split on comma Works!!
+                        pass_one_tab.at(i).machine_code = optab.get_machine_code(temp_opcode);
+                        int  register1 = get_reg_number(get_format2_register1(temp_operand));
+                        int  register2 = get_reg_number(get_format2_register2(temp_operand));
+                        string r1 = int_to_hex(register1,1); //source register
+                        string r2 = int_to_hex(register2,1); //destination register
+                        if(temp_opcode == "SVC"){ //uses immidiate value instead of register
+                            string temp_reg = get_format2_register1(temp_operand);
+                            int temp = string_to_int(temp_reg);
+                            string final = int_to_hex(temp,1);
+                            pass_one_tab.at(i).machine_code += final + "0";
+                        }
+                        else if (temp_opcode == "TIXR" ){  //no destination register
+                            pass_one_tab.at(i).machine_code += r1 + "0";
+                        }
+                        else if( temp_opcode == "SHIFTR" || temp_opcode == "SHIFTL") { //second register is immidiate
+                            string temp_reg = get_format2_register2(temp_operand);
+                            int temp = string_to_int(temp_reg)-1;
+                            string final = int_to_hex(temp,1);
+                            pass_one_tab.at(i).machine_code += r1 + final;
+                        }
+                        else{ // need to make case for integer values for second register
+                            pass_one_tab.at(i).machine_code += r1 + r2;
+                        }
                         break;
                     }
 
                         //shave 2 bit off opcode. set flags according to address mode. calculate offset.
                     case 3 : {
+
+
                         break;
                     }
 
@@ -347,12 +371,12 @@ void sicxe_asm::pass_two(){
                 }
             }
         }
-        cout << i << " Temp opcode is  " << temp_opcode <<
-             " Temp operand is " << temp_operand << " machine code is " << pass_one_tab.at(i).machine_code << endl;
+        //cout << i << " Temp opcode is  " << temp_opcode <<
+          //   " Temp operand is " << temp_operand << " machine code is " << pass_one_tab.at(i).machine_code << endl;
 
 
 
-        //need to make a print method that will change pass_one_tab into lis file after machine code generated
+
 
         /* The following cout statement loops through the "pass_one_tab" vector.
          * The output of it is the same as the content of the listing file
@@ -369,6 +393,8 @@ void sicxe_asm::pass_two(){
     }
 }
 
+
+//do we need this method? -Cody
 string sicxe_asm::opcode_binary(string opcode){
     string binary;
     string opcode_hex = optab.get_machine_code(opcode);
@@ -476,6 +502,26 @@ void sicxe_asm::set_reg_value(string reg, unsigned int val) {
 // Gets the register's number.
 int sicxe_asm::get_reg_number(string reg) {
     return registers[reg].first;
+}
+
+//these methods will split operand into register so we can run through get_reg_number
+string sicxe_asm:: get_format2_register1 (string operand){
+    try {
+        int comma = operand.find_first_of(",");
+        return operand.substr(0,comma);
+    } catch (symtab_exception& e) {
+        cerr << e.getMessage() << endl;
+        exit(EXIT_FAILURE);
+    }
+}
+string sicxe_asm:: get_format2_register2 (string operand){
+    try {
+        int comma = operand.find_first_of(",")+1;
+        return operand.substr(comma,operand.length());
+    } catch (symtab_exception& e) {
+        cerr << e.getMessage() << endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 // Gets the register's value.
